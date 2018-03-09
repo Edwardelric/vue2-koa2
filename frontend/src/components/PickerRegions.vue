@@ -1,12 +1,17 @@
 <template>
-  <div class="picker-wrapper">
-    <div class="picker-container">
-      <PickerSlot v-for="(item, index) in slotsLists" :key="index" :divider="!!item.divider" :values="item.values || []" :selectedValues="item.selectedValues || {}" :class="[item.className, item.textAlign]" :loopIndex="index" @change="addressChange"></PickerSlot>
-      <div class="selected-top-line"></div>
-      <div class="selected-bottom-line"></div>
+  <transition name="popupShow">
+    <div class="picker-wrapper" v-if="popupShow">
+      <ul class="btn-lists">
+        <li>取消</li>
+        <li>确定</li>
+      </ul>
+      <div class="picker-container">
+        <PickerSlot v-for="(item, index) in slotsLists" :key="index" :divider="!!item.divider" :values="item.values || []" :selectedValues="item.selectedValues || {}" :class="[item.className, item.textAlign]" :loopIndex="index" @change="addressChange"></PickerSlot>
+        <div class="selected-top-line"></div>
+        <div class="selected-bottom-line"></div>
+      </div>
     </div>
-  </div>
-
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">
@@ -15,6 +20,11 @@
 	export default {
 	  name: "picker-regions",
     props: {
+	    popupShow: {
+	      type: Boolean,
+        default: false,
+        required: false
+      },
       slotsLists: {
         type: Array,
         default: [],
@@ -86,10 +96,31 @@
 </script>
 
 <style lang="scss">
+  .popupShow-enter-active, .popupShow-leave-active {
+    transition: all .4s ease;
+  }
+  .popupShow-enter, .popupShow-leave-to {
+    height: 0;
+    opacity: 0;
+  }
+  .popupShow-enter-to, .popupShow-leave{
+    height: 258px;
+  }
   .picker-wrapper {
-    position: relative;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    .btn-lists {
+      display: flex;
+      justify-content: space-between;
+      padding: 0px 30px;
+      font-size: 18px;
+      color: #4990E2;
+    }
     .picker-container {
       overflow: hidden;
+      position: relative;
       height: 240px;
       display: flex;
       flex-flow: row nowrap;
@@ -115,10 +146,10 @@
           }
         }
         li {
-          height: 40px;
+          height: 38px;
           color: #B3B3B3;
           font-size: 14px;
-          line-height: 40px;
+          line-height: 38px;
           text-align: center;
           &.selected {
             color: #404040;
@@ -140,10 +171,10 @@
       border-top: 1px solid #ccc;
     }
     .selected-top-line {
-      transform: translateY(-20px);
+      transform: translateY(-19px);
     }
     .selected-bottom-line {
-      transform: translateY(20px);
+      transform: translateY(19px);
     }
   }
 </style>

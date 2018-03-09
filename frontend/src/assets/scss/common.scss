@@ -78,3 +78,13 @@ body {
 .text-right {
   @include textAlign(right);
 }
+
+.btn {
+  width: 90%;
+  height: 40px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  line-height: 40px;
+  text-align: center;
+}

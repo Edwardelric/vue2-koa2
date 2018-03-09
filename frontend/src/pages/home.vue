@@ -1,7 +1,9 @@
 <template>
     <div class="text-center">
-      <router-link to="/address">跳转到地址页</router-link>
-      home
+      <ul class="home-lists">
+        <li class="btn"><router-link to="/address">跳转到地区选择demo页</router-link></li>
+        <li class="btn"><router-link to="/transition">跳转到transition过渡页</router-link></li>
+      </ul>
     </div>
 </template>
 
@@ -14,4 +16,5 @@
 </script>
 
 <style lang="scss">
+
 </style>

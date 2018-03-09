@@ -1,6 +1,8 @@
 <template>
     <div class="address">
-      <Picker :slotsLists="addressSlots" @change="addressChange" :address="address"></Picker>
+      <p class="btn"><router-link to="/transition">跳转到地区选择demo页</router-link></p>
+      <p @click="showAddressPopup = !showAddressPopup">点击是否显示地区选择弹窗</p>
+      <PickerRegions :slotsLists="addressSlots" @change="addressChange" :address="address" :popupShow="showAddressPopup"></PickerRegions>
       <p>
         {{addressSlots[0].selectedValues ? addressSlots[0].selectedValues.code : ""}} :
         {{addressSlots[0].selectedValues ? addressSlots[0].selectedValues.name: ""}}
@@ -17,7 +19,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import Picker from "@/components/PickerRegions";
+  import PickerRegions from "@/components/PickerRegions";
   import Regions from "@/mock/regions";
 
 	export default {
@@ -51,7 +53,8 @@
             }
           }
         ],
-        address: Regions
+        address: Regions,
+        showAddressPopup: false
       };
 		},
     created() {
@@ -64,7 +67,7 @@
       }
     },
     components: {
-		  Picker
+      PickerRegions
     }
 	};
 </script>
