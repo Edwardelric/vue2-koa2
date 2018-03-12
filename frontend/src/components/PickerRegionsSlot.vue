@@ -48,7 +48,10 @@
 
     },
     mounted() {
-      this.calHeight = this.getStyle(this.$el.querySelector("li"), "height");
+      let containerHeight = document.querySelector(".picker-container").clientHeight;
+      this.calHeight = this.$el.querySelector("li").clientHeight;
+      this.$emit("setLinePosition", this.calHeight);
+      this.$el.style.marginTop = `${containerHeight / 2 - this.calHeight / 2}px`;
       if (this.selectedValues) {
         if (this.selectedValues.code || this.selectedValues.name) {
           let selectedIndex = 0;
@@ -108,9 +111,10 @@
       },
       move(destination, isMove) {
         if (isMove) {
-          this.$el.style.cssText = `transform: translateY(`+ destination +`px); transition: none;`;
+          this.$el.style.WebkitTransform = `translate(0, ${destination}px); transition: none;`;
         } else {
-          this.$el.style.cssText = `transform: translateY(`+ destination +`px); transition: transform 0.45s ease;`;
+          this.$el.style.webkitTransition = `-webkit-transform .45s ease`;
+          this.$el.style.webkitTransform = `translate(0, ${destination}px)`;
         }
       },
       getStyle(dom, propertyName) {
