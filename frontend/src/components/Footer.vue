@@ -1,9 +1,9 @@
 <template>
-    <ul class="footer">
-      <li>微信</li>
-      <li>通讯录</li>
-      <li>发现</li>
-    </ul>
+    <!--<ul class="footer">-->
+      <!--<li>微信</li>-->
+      <!--<li>通讯录</li>-->
+      <!--<li>发现</li>-->
+    <!--</ul>-->
 </template>
 
 <script type="text/ecmascript-6">

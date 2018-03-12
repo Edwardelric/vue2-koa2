@@ -3,17 +3,10 @@
     <!--<Picker :slotsLists="addressSlots" @change="addressChange" :address="address"></Picker>-->
     <div @click="showPicker">地区选择</div>
     <p>
-      {{addressSlots[0].selectedValues ? addressSlots[0].selectedValues.code : ""}} :
-      {{addressSlots[0].selectedValues ? addressSlots[0].selectedValues.name: ""}}
+      {{regions}}
     </p>
-    <p>
-      {{addressSlots[1].selectedValues ? addressSlots[1].selectedValues.code : ""}} :
-      {{addressSlots[1].selectedValues ? addressSlots[1].selectedValues.name: ""}}
-    </p>
-    <p>
-      {{addressSlots[2].selectedValues ? addressSlots[2].selectedValues.code : ""}} :
-      {{addressSlots[2].selectedValues ? addressSlots[2].selectedValues.name: ""}}
-    </p>
+    <p> {{cities}} </p>
+    <p>{{areas}}</p>
   </div>
 </template>
 
@@ -52,19 +45,54 @@
             }
           }
         ],
-        address: Regions
+        address: Regions,
+        regions: null,
+        cities: null,
+        areas: null
       };
     },
     created() {
-
+      this.showPicker();
     },
     mounted() {},
     methods: {
       showPicker() {
         let a = this.$Picker({
-
+          slots: [
+            {
+              textAlign: "center",
+              values: Regions.map(x => x),
+              className: "aaabb",
+              selectedValues: {
+                code: "440000",
+                name: "广东省",
+              }
+            },
+            {
+              textAlign: "center",
+              values: [],
+              className: "ccc",
+              selectedValues: {
+                code: "440200",
+                name: "韶关市",
+              }
+            },
+            {
+              textAlign: "center",
+              values: [],
+              selectedValues: {
+                code: "440233",
+                name: "新丰县"
+              }
+            }
+          ],
+          originData: Regions,
+          onChange: (instance, changeInfo) => {
+            this.regions = changeInfo[0];
+            this.cities = changeInfo[1];
+            this.areas = changeInfo[2];
+          }
         });
-        console.log(a);
       }
     },
     components: {
