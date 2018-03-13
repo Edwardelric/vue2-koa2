@@ -22,6 +22,7 @@ const Picker = (options = {}) => {
     maskOpacity: options.maskOpacity,
     maskColor: options.maskColor || "#ccc"
   })
+  instance.onComplete = options.onComplete ? options.onComplete.bind(null, instance) : (() => {})
   instance.onShow = options.onShow ? options.onShow.bind(null, instance) : (() => {})
   instance.onHide = options.onHide ? options.onHide.bind(null, instance) : (() => {})
   instance.onChange = options.onChange ? options.onChange.bind(null, instance) : (() => {})
