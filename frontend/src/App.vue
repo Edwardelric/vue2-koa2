@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <div class="back" @click="$router.go(-1);">返回首页</div>
     <div class="container">
       <transition :name="transitionName">
         <keep-alive>
@@ -45,26 +46,39 @@
   #app {
     height: 100%;
   }
+  .back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100%;
+    height: rem(30);
+    padding: 0 rem(10);
+    background: #ccc;
+    font-size: rem(12);
+    line-height: rem(30);
+  }
   .container {
     height: 100%;
-    padding-bottom: rem(30);
   }
   .child-view{
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 99;
     width: 100%;
     height: 100%;
-    transition: all .4s ease;
+    padding-top: rem(50);
+    transition: all .4s;
   }
   .slide-left-enter, .slide-right-leave-active {
     opacity: 0;
-    -webkit-transform: translate(100%, 0);
+     -webkit-transform: translate(100%, 0);
     transform: translate(100%, 0);
   }
   .slide-left-leave-active, .slide-right-enter {
     opacity: 0;
-    -webkit-transform: translate(-100%, 0);
+     -webkit-transform: translate(-100%, 0);
     transform: translate(-100%, 0);
   }
 </style>

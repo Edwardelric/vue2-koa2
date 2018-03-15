@@ -61,6 +61,10 @@
       };
 		},
     mounted() {
+	    let liDom = this.$el.querySelector("li");
+	    if (!liDom) {
+	      return false;
+      }
       this.itemHeight = this.$el.querySelector("li").clientHeight;
       let marginTop = this.itemHeight * ((this.showItemCount - 1) / 2);
       this.$el.style.marginTop = `${marginTop}px`;

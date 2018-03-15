@@ -100,19 +100,18 @@
 			return {
         lineHeight: 0,
         visible: false,
-        slotsLists: [],
-        slotsListsCopy: []
+        slotsLists: []
       };
 		},
     watch: {
 	    value(val) {
 	      this.visible = val;
-      } 
+      }
     },
     created() {
       let curData = this.originData;
       let keyNames = ["", "cities", "areas"];
-      this.slotsLists = this.slots;
+      this.slotsLists = JSON.parse(JSON.stringify(this.slots));
       this.slotsLists.forEach((item, index) => {
         if (item.selectedValues && (item.selectedValues.name || item.selectedValues.code)) {
           let selectedValues = item.selectedValues;
@@ -125,19 +124,20 @@
           })
         } else {
           item.values = curData;
-          curData = item.values[0][keyNames[index+1]];
-          item.selectedValues.code = item.values[0].code;
-          item.selectedValues.name = item.values[0].name;
+          if (item.values[0]) {
+            curData = item.values[0][keyNames[index+1]];
+            item.selectedValues.code = item.values[0].code;
+            item.selectedValues.name = item.values[0].name;
+          }
         }
       });
       setTimeout(() => {
         this.onComplete([
-          this.slots[0].selectedValues,
-          this.slots[1].selectedValues,
-          this.slots[2].selectedValues
+          this.slotsLists[0].selectedValues,
+          this.slotsLists[1].selectedValues,
+          this.slotsLists[2].selectedValues
         ]);
       }, 30);
-      
     },
     components: {
       NewAddressSlot
@@ -150,13 +150,13 @@
     methods: {
       addressChange(changeIndex, selectedData) {
         let {code, name} = selectedData;
-        this.slots[changeIndex].selectedValues = {
+        this.slotsLists[changeIndex].selectedValues = {
           code,
           name
         };
         let keyNames = ["", "cities", "areas"];
         let curData = this.address;
-        this.slots.forEach((item, index) => {
+        this.slotsLists.forEach((item, index) => {
           if (index >= changeIndex) {
             if (index === changeIndex) {
               curData = selectedData[keyNames[index+1]];
@@ -169,29 +169,26 @@
           }
         })
         this.onChange([
-          this.slots[0].selectedValues,
-          this.slots[1].selectedValues,
-          this.slots[2].selectedValues
+          this.slotsLists[0].selectedValues,
+          this.slotsLists[1].selectedValues,
+          this.slotsLists[2].selectedValues
         ]);
       },
       confirmFn() {
-        this.visible = false;  
-        this.slotsListsCopy[0] = Object.assign({}, this.slots[0].selectedValues);
-        this.slotsListsCopy[1] = Object.assign({}, this.slots[1].selectedValues);
-        this.slotsListsCopy[2] = Object.assign({}, this.slots[2].selectedValues);  
+        this.visible = false;
         this.onConfirm([
-          this.slots[0].selectedValues,
-          this.slots[1].selectedValues,
-          this.slots[2].selectedValues    
-        ])        
+          this.slotsLists[0].selectedValues,
+          this.slotsLists[1].selectedValues,
+          this.slotsLists[2].selectedValues
+        ])
       },
       cancelFn() {
         this.visible = false;
-        this.onConfirm([
-          this.slotsListsCopy[0].selectedValues,
-          this.slotsListsCopy[1].selectedValues,
-          this.slotsListsCopy[2].selectedValues    
-        ])        
+        this.onCancel([
+          this.slotsLists[0].selectedValues,
+          this.slotsLists[1].selectedValues,
+          this.slotsLists[2].selectedValues
+        ])
       },
       setItemHeight(height) {
         this.lineHeight = height;
@@ -221,15 +218,15 @@
       transition: all .5s ease-in;
     }
     .mask {
-      transition: all .4s ease-in; 
+      transition: all .4s ease-in;
     }
     &.picker-enter-active, &.picker-leave-active {
       .wrapper {
         opacity: 1;
-        transform: translate3d(0, 100%, 0);  
+        transform: translate3d(0, 100%, 0);
       }
       .mask {
-        opacity: 1; 
+        opacity: 1;
       }
     }
     &.picker-enter-to, &.picker-leave {
@@ -238,7 +235,7 @@
         opacity: 0;
       }
       .mask {
-         
+
         opacity: 0;
       }
     }

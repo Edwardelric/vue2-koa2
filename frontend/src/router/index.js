@@ -2,9 +2,13 @@ import Vue from "vue"
 import Router from "vue-router"
 
 import Home from "@/pages/home";
-import Transition from "@/pages/transition";
-import Address from "@/pages/address";
-import newAddress from "@/pages/newAddress";
+import Transition from "@/pages/transition/index";
+import SwitchBtn from "@/pages/transition/switchBtn";
+
+import ComponentsLists from "@/pages/componentsLists/index";
+import newAddress from "@/pages/componentsLists/newAddress";
+import Lottery from "@/pages/componentsLists/Lottery";
+import Dropload from "@/pages/componentsLists/dropload";
 
 Vue.use(Router)
 
@@ -28,22 +32,49 @@ const routes =  [
     component: Transition
   },
   {
-    path: "/address",
-    name: "Address",
+    path: "/transition/switchBtn",
+    name: "switchBtn",
+    meta: {
+      title: "转场动画效果-switch开关",
+      stage: 3
+    },
+    component: SwitchBtn
+  },
+  {
+    path: "/componentslists",
+    name: "componentsLists",
+    meta: {
+      title: "components组件集合",
+      stage: 2
+    },
+    component: ComponentsLists
+  },
+  {
+    path: "/componentslists/newAddress",
+    name: "newAddress",
     meta: {
       title: "三级联动动画效果",
       stage: 3
     },
-    component: Address
+    component: newAddress
   },
   {
-    path: "/newAddress",
-    name: "newAddress",
+    path: "/componentslists/lottery",
+    name: "lottery",
     meta: {
-      title: "三级联动动画效果",
-      stage: 2
+      title: "转盘抽奖活动",
+      stage: 3
     },
-    component: newAddress
+    component: Lottery
+  },
+  {
+    path: "/componentslists/dropload",
+    name: "dropload",
+    meta: {
+      title: "上拉下拉加载更多",
+      stage: 3
+    },
+    component: Dropload
   }
 ];
 

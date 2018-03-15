@@ -1,8 +1,8 @@
 <template>
     <div class="text-center">
       <ul class="home-lists">
-        <li class="btn"><router-link to="/address">跳转到地区选择demo页</router-link></li>
-        <li class="btn"><router-link to="/transition">跳转到transition过渡页</router-link></li>
+        <li class="btn"><router-link to="/transition">Vue transition</router-link></li>
+        <li class="btn"><router-link to="/componentslists">Vue components</router-link></li>
       </ul>
     </div>
 </template>
