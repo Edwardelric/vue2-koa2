@@ -11,9 +11,10 @@ const init = (propsData) => {
 
 const Picker = (options = {}) => {
   const instance = init({
-    showItemCount: options.showItemCount || 5,
     slots: options.slots,
     originData: options.originData || [],
+    showItemCount: options.showItemCount || 5,
+    lineHeight: options.lineHeight || 40,
     transitionName: options.transition || "picker",
     className: options.className || "",
     confirmText: options.confirmText || "确定",

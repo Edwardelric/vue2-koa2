@@ -7,18 +7,20 @@
             <li v-if="!hideCancelBtn" @click="cancelFn">{{cancelText}}</li>
             <li @click="confirmFn">{{confirmText}}</li>
           </ul>
-          <div class="picker-container" :style="{height: calContainerHeight + 'px'}">
-            <new-address-slot v-for="(slot, index) in slotsLists"
-                              :key="index"
-                              :values="slot.values"
-                              :type="slot.type"
-                              :content="slot.content"
-                              :textAlign="slot.textAlign"
-                              :showItemCount="showItemCount"
-                              :loopIndex="index"
-                              :selectedValues="slot.selectedValues || {}"
-                              @setItemHeight = setItemHeight
-                              @change = addressChange
+          <div class="picker-container" :style="{height:  showItemCount * lineHeight + 'px'}">
+            <new-address-slot v-for="(slot, index) in slotsLists" :key="index"
+              :values="slot.values"
+              :selectedValues="slot.selectedValues || {}"
+              :type="slot.type"
+              :content="slot.content"
+              :textAlign="slot.textAlign"
+              :loopIndex="index"
+              :lineHeight="lineHeight"
+              :style="{
+                'height': slot.values.length * lineHeight + 'px',
+                'marginTop': (showItemCount - 1) / 2 * lineHeight + 'px'
+              }"
+              @change = "addressChange"
             >
             </new-address-slot>
             <div class="selected-top-line" ref="selectedTopLine"></div>
@@ -35,40 +37,44 @@
 	export default {
 	  name: "newaddress",
     props: {
-      value: {
-        type: Boolean,
-        default: false
+      slots: {                      // 联动数据结构
+        type: Array,
+        default: []
       },
-      showItemCount: {
+      originData: {                 // 原始数据
+        type: Array,
+        default: []
+      },
+      showItemCount: {              // 显示个数
         type: Number,
         default: 5
       },
-      slots: {
-        type: Array,
-        default: []
+      lineHeight: {
+        type: Number,
+        default: 40
       },
-      originData: {
-        type: Array,
-        default: []
-      },
-      transitionName: {
+      transitionName: {             // transitionName className
         type: String,
         default: false
       },
-      className: {
+      className: {                  // picker-wrapper添加自定义className
         type: String,
         default: false
       },
-      confirmText: {
+      confirmText: {                // 确认文案
 	      type: String,
         default: "确定"
       },
-      cancelText: {
+      cancelText: {                 // 取消文案
 	      type: String,
         default: "取消"
       },
-      hideCancelBtn: {
+      hideCancelBtn: {              // 是否隐藏取消按钮
 	      type: Boolean,
+        default: false
+      },
+      value: {                      // 是否显示弹窗
+        type: Boolean,
         default: false
       },
       onShow: {
@@ -98,7 +104,6 @@
     },
 		data() {
 			return {
-        lineHeight: 0,
         visible: false,
         slotsLists: []
       };
@@ -141,11 +146,6 @@
     },
     components: {
       NewAddressSlot
-    },
-    computed: {
-      calContainerHeight() {
-        return this.lineHeight * this.showItemCount;
-      }
     },
     methods: {
       addressChange(changeIndex, selectedData) {
@@ -190,11 +190,11 @@
           this.slotsLists[2].selectedValues
         ])
       },
-      setItemHeight(height) {
-        this.lineHeight = height;
-      },
       maskClick() {
         this.onMaskClick();
+      },
+      logFn(txt) {
+//        console.log(txt);
       }
     }
 	};
@@ -254,11 +254,12 @@
       height: 200px;
       display: flex;
       flex-flow: row nowrap;
-      justify-content: space-around;
+      justify-content: center;
       -webkit-mask-box-image: linear-gradient(0deg, transparent, transparent 5%, #fff 20%, #fff 80%, transparent 95%, transparent);
       line-height: 40px;
       .picker {
         flex: 1 0 0;
+        overflow: hidden;
         transition: transform .45s ease;
         &.left {
           li {
@@ -276,9 +277,19 @@
           }
         }
         li {
-          color: #B3B3B3;
-          font-size: 14px;
-          text-align: center;
+          backface-visibility: hidden;
+          p {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            color: #B3B3B3;
+            font-size: 14px;
+            text-align: center;
+            position: relative;
+            top: 0;
+            left: 0;
+          }
           &.selected {
             color: #404040;
           }

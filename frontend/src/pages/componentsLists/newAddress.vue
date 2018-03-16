@@ -36,7 +36,7 @@
           className: "aaabb",
           selectedValues: {
             code: "460000",
-            name: "海南省"
+            name: "海南省",
           }
         },
         {
@@ -45,13 +45,14 @@
           className: "ccc",
           selectedValues: {
             code: "460200",
-            name: "三亚市"
+            name: "三亚市",
           }
         },
         {
           textAlign: "center",
           values: [],
           selectedValues: {
+
           }
         }
       ];
