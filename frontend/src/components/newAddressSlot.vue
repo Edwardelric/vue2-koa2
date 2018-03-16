@@ -1,6 +1,6 @@
 <template>
   <ul class="picker"
-      v-if="type!=='divide'"
+      v-if="type!=='divider'"
       :style="{'text-align': textAlign}"
   >
     <li v-for="(item, index) in (values || [])" :key="index">
@@ -57,18 +57,16 @@
       };
 		},
     mounted() {
-      if (this.selectedValues) {
-        if (this.selectedValues.code || this.selectedValues.name) {
-          let selectedIndex = 0;
-          this.values.forEach((item, index) => {
-            if (item.code === this.selectedValues.code || item.name === this.selectedValues.name) {
-              selectedIndex = index;
-            }
-          });
-          this.curPage = selectedIndex;
-          this.touchData.iY = selectedIndex * -this.lineHeight;
-          this.move(this.touchData.iY, false);
-        }
+      if (this.selectedValues && (this.selectedValues.code || this.selectedValues.name)) {
+        let selectedIndex = 0;
+        this.values.forEach((item, index) => {
+          if (item.code === this.selectedValues.code || item.name === this.selectedValues.name) {
+            selectedIndex = index;
+          }
+        });
+        this.curPage = selectedIndex;
+        this.touchData.iY = selectedIndex * -this.lineHeight;
+        this.move(this.touchData.iY, false);
       }
       this.bindEvents();
     },
@@ -102,7 +100,7 @@
         this.curPage = curPage;
         this.touchData.iY = curPage * -this.lineHeight;
         this.move(this.touchData.iY, false);
-        if (this.touchData.iStartY != this.touchData.iY) {
+        if (this.touchData.iStartY !== this.touchData.iY) {
           this.$emit("change", this.loopIndex, this.values[curPage] || []);
         }
       },

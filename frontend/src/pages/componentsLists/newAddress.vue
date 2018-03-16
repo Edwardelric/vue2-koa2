@@ -6,6 +6,8 @@
     <p>{{slotArr[0].selectedValues}}</p>
     <p>{{slotArr[1].selectedValues}}</p>
     <p>{{slotArr[2].selectedValues}}</p>
+    <p>{{slotArr[3].selectedValues}}</p>
+    <p>{{slotArr[4].selectedValues}}</p>
     <p>----</p>
     <p>选择后的</p>
     <p>{{regions}}</p>
@@ -35,30 +37,45 @@
           values: Regions.map(x => x),
           className: "aaabb",
           selectedValues: {
-            code: "460000",
-            name: "海南省",
+            code: "440000",
+            name: "广东省",
           }
+        },
+        {
+          values: [],
+          type: "divider",
+          content: "&"
         },
         {
           textAlign: "center",
           values: [],
           className: "ccc",
+          keyName: "cities",
           selectedValues: {
-            code: "460200",
-            name: "三亚市",
+            code: "440100",
+            name: "广州市",
           }
+        },
+        {
+          values: [],
+          type: "divider",
+          content: "-"
         },
         {
           textAlign: "center",
           values: [],
+          keyName: "areas",
           selectedValues: {
-
+            code: "440104",
+            name: "越秀区"
           }
         }
       ];
       this.showPicker();
     },
-    mounted() {},
+    mounted() {
+
+    },
     methods: {
       showPicker() {
         let self = this;
@@ -66,7 +83,6 @@
           slots: self.slotArr,
           originData: Regions,
           onComplete: (instance, changeInfo) => {
-            console.log(changeInfo);
             this.regions = changeInfo[0];
             this.cities = changeInfo[1];
             this.areas = changeInfo[2];
@@ -78,9 +94,9 @@
           },
           onConfirm: (instance, changeInfo) => {
             console.log(changeInfo);
-            self.slotArr[0].selectedValues = changeInfo[0];
-            self.slotArr[1].selectedValues = changeInfo[1];
-            self.slotArr[2].selectedValues = changeInfo[2];
+            self.slotArr[0].selectedValues = changeInfo[0].selectedValues;
+            self.slotArr[2].selectedValues = changeInfo[1].selectedValues;
+            self.slotArr[4].selectedValues = changeInfo[2].selectedValues;
           },
           onCancel: (instance, changeInfo) => {
             console.log(changeInfo);

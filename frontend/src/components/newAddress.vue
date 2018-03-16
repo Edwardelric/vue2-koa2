@@ -115,80 +115,92 @@
     },
     created() {
       let curData = this.originData;
-      let keyNames = ["", "cities", "areas"];
       this.slotsLists = JSON.parse(JSON.stringify(this.slots));
       this.slotsLists.forEach((item, index) => {
-        if (item.selectedValues && (item.selectedValues.name || item.selectedValues.code)) {
-          let selectedValues = item.selectedValues;
-          curData.forEach((subItem, subIndex) => {
-            if (subItem.code === selectedValues.code || subItem.name === selectedValues.name) {
-              item.values = curData;
-              curData = subItem[keyNames[index+1]];
-              return false;
+        if (item.type !== "divider") {
+          if (item.selectedValues && (item.selectedValues.name || item.selectedValues.code)) {
+            let selectedValues = item.selectedValues;
+            curData.forEach((subItem, subIndex) => {
+              if (subItem.code === selectedValues.code || subItem.name === selectedValues.name) {
+                item.values = curData;
+                curData = subItem[this.getKeyName(index+1)];
+                return false;
+              }
+            })
+          } else {
+            item.values = curData;
+            if (item.values[0]) {
+              curData = item.values[0][this.getKeyName(index+1)];
+              item.selectedValues.code = item.values[0].code;
+              item.selectedValues.name = item.values[0].name;
             }
-          })
-        } else {
-          item.values = curData;
-          if (item.values[0]) {
-            curData = item.values[0][keyNames[index+1]];
-            item.selectedValues.code = item.values[0].code;
-            item.selectedValues.name = item.values[0].name;
           }
         }
       });
       setTimeout(() => {
-        this.onComplete([
-          this.slotsLists[0].selectedValues,
-          this.slotsLists[1].selectedValues,
-          this.slotsLists[2].selectedValues
-        ]);
+        console.log("complete");
+        console.log(this.slotsLists);
+        this.onComplete(this.slotsLists.filter((item) => {
+          return item.code || item.name;
+        }));
       }, 30);
     },
     components: {
       NewAddressSlot
     },
     methods: {
+	    getKeyName(index) {
+	      let step = index;
+        while(this.slotsLists[step] && (!this.slotsLists[step].keyName)) {
+          step += 1;
+        }
+        if (this.slotsLists[step]) {
+          let keyname = this.slotsLists[step].keyName || "";
+          return keyname;
+        } else {
+          return ""
+        }
+      },
       addressChange(changeIndex, selectedData) {
         let {code, name} = selectedData;
         this.slotsLists[changeIndex].selectedValues = {
           code,
           name
         };
-        let keyNames = ["", "cities", "areas"];
         let curData = this.address;
         this.slotsLists.forEach((item, index) => {
-          if (index >= changeIndex) {
+          if (index >= changeIndex && (item.type !== "divider")) {
             if (index === changeIndex) {
-              curData = selectedData[keyNames[index+1]];
+              curData = selectedData[this.getKeyName(index+1)];
             } else {
               item.values = curData;
-              curData = item.values[0] ? item.values[0][keyNames[index+1]] : [];
-              item.selectedValues.code = item.values[0] ? (item.values[0].code || "") : "";
-              item.selectedValues.name = item.values[0] ? (item.values[0].name || "") : "";
+              if (item.values[0]) {
+                curData = item.values[0][this.getKeyName(index+1)];
+                item.selectedValues.code = item.values[0].code || "";
+                item.selectedValues.name = item.values[0].name || "";
+              }
             }
           }
-        })
-        this.onChange([
-          this.slotsLists[0].selectedValues,
-          this.slotsLists[1].selectedValues,
-          this.slotsLists[2].selectedValues
-        ]);
+        });
+        console.log("change");
+        console.log(this.slotsLists);
+        this.onChange(this.slotsLists.filter((item) => {
+          return item.code || item.name;
+        }));
       },
       confirmFn() {
         this.visible = false;
-        this.onConfirm([
-          this.slotsLists[0].selectedValues,
-          this.slotsLists[1].selectedValues,
-          this.slotsLists[2].selectedValues
-        ])
+        console.log("confirm");
+        console.log(this.slotsLists);
+        this.onConfirm(this.slotsLists.filter((item) => {
+          return item.code || item.name;
+        }))
       },
       cancelFn() {
         this.visible = false;
-        this.onCancel([
-          this.slotsLists[0].selectedValues,
-          this.slotsLists[1].selectedValues,
-          this.slotsLists[2].selectedValues
-        ])
+        this.onCancel(this.slotsLists.filter((item) => {
+          return item.code || item.name;
+        }))
       },
       maskClick() {
         this.onMaskClick();
@@ -297,9 +309,7 @@
       }
       .divider {
         flex: 0 0 auto;
-        display: flex;
-        align-self: stretch;
-        align-items: center;
+
       }
     }
     .selected-top-line, .selected-bottom-line {
