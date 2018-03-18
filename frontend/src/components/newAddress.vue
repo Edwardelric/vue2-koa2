@@ -138,17 +138,24 @@
         }
       });
       setTimeout(() => {
-        console.log("complete");
-        console.log(this.slotsLists);
-        this.onComplete(this.slotsLists.filter((item) => {
-          return item.code || item.name;
-        }));
+        this.onComplete(this.filterVal());
       }, 30);
     },
     components: {
       NewAddressSlot
     },
     methods: {
+	    filterVal() {
+        let arr = [];
+        this.slotsLists.forEach((item, index) => {
+          if (item.selectedValues && (item.selectedValues.code || item.selectedValues.name)) {
+            arr[index] = Object.assign({}, item.selectedValues);
+          } else {
+            arr[index] = {};
+          }
+        });
+        return arr;
+      },
 	    getKeyName(index) {
 	      let step = index;
         while(this.slotsLists[step] && (!this.slotsLists[step].keyName)) {
@@ -176,31 +183,21 @@
               item.values = curData;
               if (item.values[0]) {
                 curData = item.values[0][this.getKeyName(index+1)];
-                item.selectedValues.code = item.values[0].code || "";
-                item.selectedValues.name = item.values[0].name || "";
               }
+              item.selectedValues.code = item.values[0] ? item.values[0].code || "" : "";
+              item.selectedValues.name = item.values[0] ? item.values[0].name || "" : "";
             }
           }
         });
-        console.log("change");
-        console.log(this.slotsLists);
-        this.onChange(this.slotsLists.filter((item) => {
-          return item.code || item.name;
-        }));
+        this.onChange(this.filterVal());
       },
       confirmFn() {
         this.visible = false;
-        console.log("confirm");
-        console.log(this.slotsLists);
-        this.onConfirm(this.slotsLists.filter((item) => {
-          return item.code || item.name;
-        }))
+        this.onConfirm(this.filterVal());
       },
       cancelFn() {
         this.visible = false;
-        this.onCancel(this.slotsLists.filter((item) => {
-          return item.code || item.name;
-        }))
+        this.onCancel(this.filterVal());
       },
       maskClick() {
         this.onMaskClick();

@@ -44,7 +44,7 @@
         {
           values: [],
           type: "divider",
-          content: "&"
+          content: "+"
         },
         {
           textAlign: "center",
@@ -84,19 +84,27 @@
           originData: Regions,
           onComplete: (instance, changeInfo) => {
             this.regions = changeInfo[0];
-            this.cities = changeInfo[1];
-            this.areas = changeInfo[2];
+            this.cities = changeInfo[2];
+            this.areas = changeInfo[4];
           },
           onChange: (instance, changeInfo) => {
             this.regions = changeInfo[0];
-            this.cities = changeInfo[1];
-            this.areas = changeInfo[2];
+            this.cities = changeInfo[2];
+            this.areas = changeInfo[4];
           },
           onConfirm: (instance, changeInfo) => {
-            console.log(changeInfo);
-            self.slotArr[0].selectedValues = changeInfo[0].selectedValues;
-            self.slotArr[2].selectedValues = changeInfo[1].selectedValues;
-            self.slotArr[4].selectedValues = changeInfo[2].selectedValues;
+            self.slotArr[0].selectedValues = {
+              code: changeInfo[0].code,
+              name: changeInfo[0].name
+            };
+            self.slotArr[2].selectedValues = {
+              code: changeInfo[2].code,
+              name: changeInfo[2].name
+            };
+            self.slotArr[4].selectedValues = {
+              code: changeInfo[4].code,
+              name: changeInfo[4].name
+            }
           },
           onCancel: (instance, changeInfo) => {
             console.log(changeInfo);
