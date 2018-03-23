@@ -1,14 +1,11 @@
 <template>
     <div class="scroll-wrapper">
-      <ul class="list-wrapper">
-        <li v-for="(item, index) in list">当前的item:{{item}}</li>
-      </ul>
-      <InfiniteScroll></InfiniteScroll>
+      <Loadmore></Loadmore>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import InfiniteScroll from "@/components/dropload";
+  import Loadmore from "@/components/loadmore";
 
 	export default {
 		data() {
@@ -22,7 +19,7 @@
       }
     },
     components: {
-      InfiniteScroll
+      Loadmore
     }
 	};
 </script>

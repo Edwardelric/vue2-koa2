@@ -1,13 +1,12 @@
 <template>
   <div class="address">
-    <!--<Picker :slotsLists="addressSlots" @change="addressChange" :address="address"></Picker>-->
     <div @click="showPicker">地区选择</div>
     <p>原始</p>
-    <p>{{slotArr[0].selectedValues}}</p>
-    <p>{{slotArr[1].selectedValues}}</p>
-    <p>{{slotArr[2].selectedValues}}</p>
-    <p>{{slotArr[3].selectedValues}}</p>
-    <p>{{slotArr[4].selectedValues}}</p>
+    <p>{{slotArr[0]?slotArr[0].selectedValues:"0"}}</p>
+    <p>{{slotArr[1]?slotArr[1].selectedValues:"0"}}</p>
+    <p>{{slotArr[2]?slotArr[2].selectedValues:"0"}}</p>
+    <p>{{slotArr[3]?slotArr[3].selectedValues:"0"}}</p>
+    <p>{{slotArr[4]?slotArr[4].selectedValues:"0"}}</p>
     <p>----</p>
     <p>选择后的</p>
     <p>{{regions}}</p>
@@ -17,7 +16,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import Picker from "@/components/newAddress.js";
+  import Picker from "@/components/pickerRegions.js";
   import Regions from "@/mock/regions";
 
   export default {

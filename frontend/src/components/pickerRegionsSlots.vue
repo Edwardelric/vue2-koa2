@@ -3,9 +3,7 @@
       v-if="type!=='divider'"
       :style="{'text-align': textAlign}"
   >
-    <li v-for="(item, index) in (values || [])" :key="index">
-      <p>{{item.name}}</p>
-    </li>
+    <li v-for="(item, index) in (values || [])" :key="index">{{item.name}}</li>
   </ul>
   <div class="divider" v-else="divider" :style="{'text-align': textAlign}">{{content}}</div>
 </template>
@@ -14,7 +12,7 @@
   import draggable from "./draggable";
 
 	export default {
-	  name: "new-address-slot",
+	  name: "picker-regions-slots",
     props: {
       values: {
         type: Array,

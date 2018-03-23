@@ -8,7 +8,7 @@
             <li @click="confirmFn">{{confirmText}}</li>
           </ul>
           <div class="picker-container" :style="{height:  showItemCount * lineHeight + 'px'}">
-            <new-address-slot v-for="(slot, index) in slotsLists" :key="index"
+            <picker-regions-slots v-for="(slot, index) in slotsLists" :key="index"
               :values="slot.values"
               :selectedValues="slot.selectedValues || {}"
               :type="slot.type"
@@ -22,7 +22,7 @@
               }"
               @change = "addressChange"
             >
-            </new-address-slot>
+            </picker-regions-slots>
             <div class="selected-top-line" ref="selectedTopLine"></div>
             <div class="selected-bottom-line" ref="selectedBottomLine"></div>
           </div>
@@ -32,10 +32,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import NewAddressSlot from "./newAddressSlot";
+  import PickerRegionsSlots from "./pickerRegionsSlots";
 
 	export default {
-	  name: "newaddress",
+	  name: "picker-regions",
     props: {
       slots: {                      // 联动数据结构
         type: Array,
@@ -142,7 +142,7 @@
       }, 30);
     },
     components: {
-      NewAddressSlot
+      PickerRegionsSlots
     },
     methods: {
 	    filterVal() {
@@ -210,6 +210,9 @@
 </script>
 
 <style lang="scss">
+  @function rem($px) {
+    @return $px / ($px * 0 + 1) / 37.5 * 1rem ;
+  }
   .picker-wrapper {
     position: absolute;
     left: 0;
@@ -251,16 +254,16 @@
     .btn-groups {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 10px;
-      padding: 20px 20px 0 20px;
-      font-size: 17px;
+      margin-bottom: rem(10);
+      padding: rem(20) rem(20) 0 rem(20);
+      font-size: rem(17);
       color: #4990E2;
       text-align: center;
     }
     .picker-container {
       overflow: hidden;
       position: relative;
-      height: 200px;
+      height: rem(200);
       display: flex;
       flex-flow: row nowrap;
       justify-content: center;
@@ -287,18 +290,14 @@
         }
         li {
           backface-visibility: hidden;
-          p {
-            width: 100%;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            color: #B3B3B3;
-            font-size: 14px;
-            text-align: center;
-            position: relative;
-            top: 0;
-            left: 0;
-          }
+          width: 100%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          color: #B3B3B3;
+          font-size: rem(14);
+          text-align: center;
+          line-height: 40px;
           &.selected {
             color: #404040;
           }

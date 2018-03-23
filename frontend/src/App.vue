@@ -53,7 +53,6 @@
     z-index: 100;
     width: 100%;
     height: rem(30);
-    padding: 0 rem(10);
     background: #ccc;
     font-size: rem(12);
     line-height: rem(30);

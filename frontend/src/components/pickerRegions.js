@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import PickerComponent from './newAddress.vue'
+import PickerComponent from './pickerRegions.vue'
 
 const PickerConstructor = Vue.extend(PickerComponent)
 

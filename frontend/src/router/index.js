@@ -6,9 +6,9 @@ import Transition from "@/pages/transition/index";
 import SwitchBtn from "@/pages/transition/switchBtn";
 
 import ComponentsLists from "@/pages/componentsLists/index";
-import newAddress from "@/pages/componentsLists/newAddress";
+import PickerRegions from "@/pages/componentsLists/pickerRegions";
 import Lottery from "@/pages/componentsLists/Lottery";
-import Dropload from "@/pages/componentsLists/dropload";
+import Loadmore from "@/pages/componentsLists/loadmore";
 
 Vue.use(Router)
 
@@ -50,13 +50,13 @@ const routes =  [
     component: ComponentsLists
   },
   {
-    path: "/componentslists/newAddress",
-    name: "newAddress",
+    path: "/componentslists/pickerRegions",
+    name: "pickerRegions",
     meta: {
       title: "三级联动动画效果",
       stage: 3
     },
-    component: newAddress
+    component: PickerRegions
   },
   {
     path: "/componentslists/lottery",
@@ -68,13 +68,13 @@ const routes =  [
     component: Lottery
   },
   {
-    path: "/componentslists/dropload",
-    name: "dropload",
+    path: "/componentslists/loadmore",
+    name: "loadmore",
     meta: {
       title: "上拉下拉加载更多",
       stage: 3
     },
-    component: Dropload
+    component: Loadmore
   }
 ];
 
