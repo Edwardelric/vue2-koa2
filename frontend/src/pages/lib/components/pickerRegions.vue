@@ -17,7 +17,7 @@
 
 <script type="text/ecmascript-6">
   import Picker from "@/components/picker/pickerRegions.js";
-  import Regions from "@/mock/regions";
+  import Regions from "./regions";
 
   export default {
     data() {

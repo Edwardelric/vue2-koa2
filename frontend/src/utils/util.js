@@ -122,7 +122,6 @@ let validateVersionGt35 = () => {
 * @param {isIos, isAndroid, isApp, isWeixin}
 * */
 let checkSystem = (function() {
-  console.log(window.navigator);
   let ua = window.navigator.userAgent;
   let obj = {
     isIos() {
