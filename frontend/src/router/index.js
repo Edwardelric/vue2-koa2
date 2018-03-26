@@ -2,6 +2,9 @@ import Vue from "vue"
 import Router from "vue-router"
 
 import Home from "@/pages/home";
+import Info from "@/pages/info";
+
+
 import Transition from "@/pages/transition/index";
 import SwitchBtn from "@/pages/transition/switchBtn";
 
@@ -9,6 +12,7 @@ import ComponentsLists from "@/pages/componentsLists/index";
 import PickerRegions from "@/pages/componentsLists/pickerRegions";
 import Lottery from "@/pages/componentsLists/Lottery";
 import Loadmore from "@/pages/componentsLists/loadmore";
+
 
 Vue.use(Router)
 
@@ -21,6 +25,15 @@ const routes =  [
       stage: 1
     },
     component: Home
+  },
+  {
+    path: "/info",
+    name: "Info",
+    meta: {
+      title: "我",
+      state: 1
+    },
+    component: Info
   },
   {
     path: "/transition",
