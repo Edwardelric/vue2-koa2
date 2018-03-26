@@ -1,7 +1,7 @@
 <template>
   <div class="panel-wrapper">
     <div class="panel">
-      <div class="panel-content">
+      <div class="panel-content" @click="navigatorTo">
         <img src="../assets/images/home/home.jpeg" />
         <h3>444</h3>
         <h4>123</h4>
@@ -21,7 +21,12 @@
 	export default {
 		data() {
 			return {};
-		}
+		},
+    methods: {
+      navigatorTo() {
+
+      }
+    }
 	};
 </script>
 

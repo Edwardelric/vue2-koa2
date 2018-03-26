@@ -6,10 +6,10 @@ const footerMenu = [
     selectedUrl: "../../static/home-active.png"
   },
   {
-    url: "category",
-    txt: "分类",
-    imgUrl: "../../static/category.png",
-    selectedUrl: "../../static/category-active.png"
+    url: "discover",
+    txt: "发现",
+    imgUrl: "../../static/discover.png",
+    selectedUrl: "../../static/discover-active.png"
   },
   {
     url: "ui",

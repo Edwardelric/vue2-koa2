@@ -32,7 +32,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import PickerRegions from "@/components/PickerRegions";
+  import PickerRegions from "@/components/picker/PickerRegions";
   import Regions from "@/mock/regions";
 
 	export default {

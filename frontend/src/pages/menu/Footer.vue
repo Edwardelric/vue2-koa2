@@ -32,7 +32,7 @@
 </script>
 
 <style lang="scss">
-  @import "../assets/scss/mixins";
+  @import "../../assets/scss/mixins";
   .footer {
     position: fixed;
     left: 0;

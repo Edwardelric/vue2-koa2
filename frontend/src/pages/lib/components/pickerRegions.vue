@@ -16,7 +16,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import Picker from "@/components/pickerRegions.js";
+  import Picker from "@/components/picker/pickerRegions.js";
   import Regions from "@/mock/regions";
 
   export default {

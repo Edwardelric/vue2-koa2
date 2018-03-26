@@ -2,16 +2,16 @@ import Vue from "vue"
 import Router from "vue-router"
 
 import Home from "@/pages/home";
+import Discover from "@/pages/discover";
 import Info from "@/pages/info";
+import Search from "@/pages/search";
+import Ui from "@/pages/ui";
 
+import SwitchBtn from "@/pages/lib/transition/switchBtn";
 
-import Transition from "@/pages/transition/index";
-import SwitchBtn from "@/pages/transition/switchBtn";
-
-import ComponentsLists from "@/pages/componentsLists/index";
-import PickerRegions from "@/pages/componentsLists/pickerRegions";
-import Lottery from "@/pages/componentsLists/Lottery";
-import Loadmore from "@/pages/componentsLists/loadmore";
+import PickerRegions from "@/pages/lib/components/pickerRegions";
+import Lottery from "@/pages/lib/components/Lottery";
+import Loadmore from "@/pages/lib/components/loadmore";
 
 
 Vue.use(Router)
@@ -19,7 +19,7 @@ Vue.use(Router)
 const routes =  [
   {
     path: "/",
-    name: "Home",
+    name: "home",
     meta: {
       title: "首页",
       stage: 1
@@ -27,8 +27,26 @@ const routes =  [
     component: Home
   },
   {
+    path: "/discover",
+    name: "discover",
+    meta: {
+      title: "发现",
+      state: 1
+    },
+    component: Discover
+  },
+  {
+    path: "/ui",
+    name: "ui",
+    meta: {
+      title: "ui",
+      state: 1
+    },
+    component: Ui
+  },
+  {
     path: "/info",
-    name: "Info",
+    name: "info",
     meta: {
       title: "我",
       state: 1
@@ -36,13 +54,13 @@ const routes =  [
     component: Info
   },
   {
-    path: "/transition",
-    name: "transition",
+    path: "/search",
+    name: "search",
     meta: {
-      title: "转场动画效果",
-      stage: 2
+      title: "搜索",
+      state: 2
     },
-    component: Transition
+    component: Search
   },
   {
     path: "/transition/switchBtn",
@@ -52,15 +70,6 @@ const routes =  [
       stage: 3
     },
     component: SwitchBtn
-  },
-  {
-    path: "/componentslists",
-    name: "componentsLists",
-    meta: {
-      title: "components组件集合",
-      stage: 2
-    },
-    component: ComponentsLists
   },
   {
     path: "/componentslists/pickerRegions",

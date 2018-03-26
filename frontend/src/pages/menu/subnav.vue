@@ -31,7 +31,7 @@
 </script>
 
 <style lang="scss">
-  @import "../assets/scss/_mixins";
+  @import "../../assets/scss/mixins";
   .subNav-wrapper {
     display: flex;
     flex-flow: row nowrap;

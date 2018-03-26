@@ -12,7 +12,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import Footer from "./pages/Footer";
+  import Footer from "./pages/menu/Footer";
+
   export default {
     name: 'App',
     data() {

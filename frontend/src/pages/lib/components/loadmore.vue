@@ -25,7 +25,7 @@
 </script>
 
 <style lang="scss">
-  @import "../../assets/scss/_mixins";
+  @import "../../../assets/scss/mixins";
   .list-wrapper {
     li {
       margin-bottom: rem(10);

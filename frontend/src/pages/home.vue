@@ -4,7 +4,7 @@
         <div class="swiper">
           <img src="../assets/images/home/home.jpeg" />
         </div>
-        <div class="search">
+        <div class="search" @click="navigatorTo">
           <i class="iconfont icon-search"></i>
           搜索内容
         </div>
@@ -20,12 +20,20 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import SubNav from "./subnav";
-  import Panel from "./panel";
+  import SubNav from "./menu/subnav";
+  import Panel from "../components/panel";
+
 	export default {
 		data() {
 			return {};
 		},
+    methods: {
+      navigatorTo() {
+        this.$router.push({
+          path: `/search`
+        });
+      }
+    },
     components: {
 		  SubNav,
       Panel
