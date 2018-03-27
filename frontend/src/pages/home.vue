@@ -27,6 +27,11 @@
 		data() {
 			return {};
 		},
+    created() {
+		  this.$ajax.get("/api/string").then(res => {
+        console.log(res);
+      })
+    },
     methods: {
       navigatorTo() {
         this.$router.push({

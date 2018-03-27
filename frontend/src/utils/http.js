@@ -9,10 +9,10 @@ axios.defaults.validateStatus = (status) => {
 
 let ajaxMethods = ["get", "post"];
 let ajax = {};
-let tempStorage = [];
+let tempStorage = 0;
 
 axios.interceptors.request.use((config) => {
-  tempStorage.push(true);
+  tempStorage++;
   console.log("start loading");
   return config;
 }, function (error) {
@@ -20,12 +20,14 @@ axios.interceptors.request.use((config) => {
 });
 
 axios.interceptors.response.use((res) => {
-  tempStorage.shift();
-  if (!tempStorage.length) {
+  tempStorage--;
+  if (!tempStorage) {
     console.log("end loading");
   }
-  return res;
+  return Promise.resolve(res);
 }, (err) => {
+  tempStorage = 0;
+  console.log("end loading");
   return Promise.reject(err)
 });
 
