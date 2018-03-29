@@ -8,6 +8,7 @@ const logger = require('koa-logger')
 let mongoose = require("mongoose")
 
 // brew install mongodb (https://www.cnblogs.com/junqilian/p/4109580.html)
+// mongodb linux 配置 https://blog.csdn.net/a123demi/article/details/70238972
 // brew services start mongodb | mongod --config /usr/local/etc/mongod.conf
 // 上面的命令会出现  Successfully started `mongodb`  这样类似开启mongodb的提示。。表示mongdb开启成功
 // mongo
@@ -21,6 +22,8 @@ let mongoose = require("mongoose")
 // Mongoose 中有3个重要的概念,分别是Schema、Model、Entity
 // Schema 生成 Model, Model 生成 Document ， Model和Document 都可对数据库操作造成影响， 但Model比Document更具操作性
 // model() 方法，将Schema编译为model, model()方法的第一个参数是模型名称
+
+// ps -ef | grep mongod 停止服务  kill -9  id
 const index = require('./routes/index')
 
 // error handler
@@ -48,7 +51,8 @@ app.use(async (ctx, next) => {
 
 app.use(async (ctx, next) => {
 	//connect mongodb
-  await mongoose.connect("mongodb://localhost/eduline", (err) => {
+	// await mongoose.connect("mongodb://localhost/eduline", (err) => {
+	await mongoose.connect("mongodb://10.47.12.111:27017/eduline", (err) => {
 	  if (err) {
 		  console.log("连接失败");
 	  } else {
