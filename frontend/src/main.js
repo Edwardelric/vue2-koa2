@@ -4,6 +4,10 @@ import ajax from "./utils/http"
 import App from './App'
 import router from './router'
 
+import("./utils/util").then((...args) => {
+  console.log(args);
+})
+
 Vue.use(ajax)
 
 Vue.config.productionTip = false;

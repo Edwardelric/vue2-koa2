@@ -146,7 +146,103 @@ let checkSystem = (function() {
   }
 })();
 
-module.exports = {
+/*
+* 判断是否是数组类型
+* @param [arr]
+* */
+let isArray = (arr) => {
+  return Object.prototype.toString.call(arr) === "[object Array]";
+}
+
+/*
+* 具体判断是什么类型
+* @param [arr]
+* */
+let isType = (obj, type) => {
+  if (typeof obj !== "object") {
+    return false;
+  }
+  const typeString = Object.prototype.toString.call(obj);
+  let flag;
+  switch (type) {
+    case "Array":
+      flag = typeString === "[object Array]";
+      break;
+    case "Date":
+      flag = typeString === "[object Date]";
+      break;
+    case "RegExp":
+      flag = typeString === "[object RegExp]";
+      break;
+    default:
+      flag = false;
+  }
+  return flag;
+}
+
+/*
+* 除了Reg和date类型之外的深拷贝
+* @param [arr]
+* */
+let copy = (parent) => {
+  if (typeof parent !== "object" && typeof parent !== "function") {
+    return parent;
+  }
+  let o = isArray(parent) ? [] : {};
+  for (let i in parent) {
+    o[i] = typeof parent[i] === "object" ? arguments.callee(parent[i]) : parent[i];
+  }
+  return o;
+}
+
+/*
+* 深拷贝
+* @param {parent}
+* */
+let clone = (parent) => {
+  const getRegExp = re => {
+    var flags = "";
+    if (re.global) flags += "g";
+    if (re.ignoreCase) flags += "i";
+    if (re.multiline) flags += "m";
+    return flags;
+  }
+  const parents = [];
+  const children = [];
+  const _clone = parent => {
+    if (parent === null) return null;
+    if (typeof parent !== "object") {
+      return parent;
+    }
+    let child, proto;
+    if (isType(parent, "Array")) {
+      child = [];
+    } else if (isType(parent, "RegExp")) {
+      child = new RegExp(parent.source, getRegExp(parent));
+      if (parent.lastIndex) {
+        child.lastIndex = parent.lastIndex;
+      }
+    } else if (isType(parent, "Date")) {
+      child = new Date(parent.getTime());
+    } else {
+      proto = Object.getPrototypeOf(parent);
+      child = Object.create(proto);
+    }
+    const index = parents.indexOf(parent);
+    if (index !== -1) {
+      return children[index];
+    }
+    parents.push(parent);
+    children.push(child);
+    for (let i in parent) {
+      child[i] = _clone(parent[i]);
+    }
+    return child;
+  }
+  return _clone(parent);
+}
+
+export {
   getCurrentTime,
   formatDate,
   currency,

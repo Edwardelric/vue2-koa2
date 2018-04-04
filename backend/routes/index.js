@@ -4,8 +4,8 @@ let discover = require("../models/discover");
 
 router.get('/', async (ctx, next) => {
   let content = "";
-  let a = await discover({"username":"ed1", "email":"88@qq.com", "pwd": "666"});
-  await a.save();
+  // let a = await discover({"username":"ed1", "email":"88@qq.com", "pwd": "666"});
+  // await a.save();
   await discover.find(function(err, doc) {
     content = doc;
 	  console.log(doc);
