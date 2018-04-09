@@ -7,11 +7,11 @@
 
 #### webstorm
 * 设置vue文件   
-    * ![](./template.png)
+    * ![](https://github.com/Edwardelric/vue2-koa2/blob/extend/share/template.png?raw=true)
 * 设置es6语法格式
-    * ![](./language.png)    
+    * ![](https://github.com/Edwardelric/vue2-koa2/blob/extend/share/language.png?raw=true)    
 * 设置缩进
-    * ![](./indent.png)      
+    * ![](https://github.com/Edwardelric/vue2-koa2/blob/extend/share/indent.png?raw=true)      
 #### sublime
 * 略
     
@@ -23,7 +23,7 @@
 
 ## 
  
-#### 声明规范：
+#### 声明规范
  
 * 变量名驼峰命名 
     ```
@@ -49,23 +49,10 @@
     ```
     class Child extends Parent;
     ```
-* 语义化声明
-    ```
-    布局
-    wrapper, main, content, header, footer, sidebar, nav, subNav,
-    ```
-    ```
-    结构
-    section, article, panel, figure
-    ```
-    ```
-    功能
-    logo, banner, tag, message, tips, vote, friendlink, summary, search, tools, mask
-    ```
     
 ## 
 
-#### 编写规范：   
+#### 编写规范   
 * 空格控制
     ```
     let name = "Edward";
@@ -136,7 +123,7 @@
     let tmp = `this is ${tmpStr}`;
     ```       
         
-#### 技巧简介：     
+#### 技巧简介     
 * rest用法
     ```
     //bad:
@@ -228,7 +215,7 @@
 
 ## css 规范
 
-#### 书写顺序：
+#### 书写顺序
 * 位置顺序
     ```
     position, top, right, z-index, display, float
@@ -257,8 +244,22 @@
     ```
     animate, transition
     ```
-    
-#### 书写规范：
+
+#### 语义化声明
+    ```
+    布局
+    wrapper, main, content, header, footer, sidebar, nav, subNav,
+    ```
+    ```
+    结构
+    section, article, panel, figure
+    ```
+    ```
+    功能
+    logo, banner, tag, message, tips, vote, friendlink, summary, search, tools, mask
+    ```
+        
+#### 书写规范
 
 * ![](https://pic1.zhimg.com/80/2166c1fb168908a5858998eab2d309aa_hd.jpg)
 * ![](https://pic2.zhimg.com/80/ea65b1c1c00c792866a670e9d66161a8_hd.jpg)
