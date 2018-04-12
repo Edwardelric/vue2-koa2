@@ -1,7 +1,5 @@
 <template>
-  <div>
-    this is template123
-  </div>
+  <div></div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -13,8 +11,4 @@
 </script>
 
 <style lang="scss">
-  @import "../../assets/scss/common";
-  body {
-    background: red;
-  }
 </style>

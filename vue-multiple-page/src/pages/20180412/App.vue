@@ -1,11 +1,13 @@
 <template>
   <div>
-    this is template 0412
+    this is template 041212
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-	export default {
+  import {query,urlToJson} from "@/utils/util";
+
+  export default {
 		data() {
 			return {};
 		}
@@ -14,7 +16,4 @@
 
 <style lang="scss">
   @import "../../assets/scss/common";
-  body {
-    background: red;
-  }
 </style>

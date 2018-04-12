@@ -11,7 +11,7 @@ let getCurrentTime = (_symbol = ":") => {
   let f = ("0" + date.getMinutes()).slice(-2);
   let s = ("0" + date.getSeconds()).slice(-2);
   return y + _symbol + m + _symbol + d + _symbol + h + _symbol + f + _symbol + s;
-}
+};
 
 /*
 * 时间格式化
@@ -38,7 +38,7 @@ let formatDate = (date, format) => {
     }
   }
   return format;
-}
+};
 
 /*
 * 千分位化金额
@@ -66,7 +66,7 @@ let currency = (val, _decimals = 2, _flag = true, _symbol) => {
     
     return sign + _symbol + head + int.slice(i).replace(digitsRE, "$1,") + _float;
   }
-}
+};
 
 /*
 * 手机号验证
@@ -84,7 +84,7 @@ let validatePhone = (pNum) => {
   } else {
     return true;
   }
-}
+};
 
 /*
 * 车牌验证
@@ -102,7 +102,7 @@ let validatePlate = (plate) => {
   } else {
     return true;
   }
-}
+};
 
 /*
 * 移动端android版本判断
@@ -115,7 +115,7 @@ let validateVersionGt35 = () => {
   } else {
     return false;
   }
-}
+};
 
 /*
 * 系统环境
@@ -147,8 +147,46 @@ let checkSystem = (function() {
 })();
 
 /*
+* 获取url的参数
+* @param {name}
+* */
+let query = (name, url = window.location.search.substr(1)) => {
+  var reg = new RegExp("(&?)"+ name +"=([^&]*)(&|$)");
+  var r = reg.exec(url);
+  if (r) {
+    return decodeURI(r[2]);
+  } else {
+    return "";
+  }
+};
+
+/*
+* url参数格式化
+* @param {url}
+* */
+let urlToJson = (url = "") => {
+  let regUrl = /^[^\?]+\?([\w\W]+)$/;
+  let arr = regUrl.exec(url)[1].split("&") || [];
+  return arr.reduce((obj, item) => {
+    let val = item.split("=");
+    obj[val[0]] = val[1];
+    return obj;
+  }, {});
+  // let regPara = /([^&=]+)=([\w\W]*?)(&|$|#)/g;      // 当表达式使用 "g" 标志时，可多次执行exec方法
+  // let arrUrl = regUrl.exec(url);
+  // let ret = {};
+  // if (arrUrl && arrUrl[1]) {
+  //   let strPara = arrUrl[1];
+  //   let result;
+  //   while ((result = regPara.exec(strPara)) != null) {
+  //     ret[result[1]] = result[2];
+  //   }
+  // }
+  // return ret;
+};
+/*
 * 判断是否是数组类型
-* @param [arr]
+* @param {Array}
 * */
 let isArray = (arr) => {
   return Object.prototype.toString.call(arr) === "[object Array]";
@@ -156,7 +194,7 @@ let isArray = (arr) => {
 
 /*
 * 具体判断是什么类型
-* @param [arr]
+* @param {Obj, type}
 * */
 let isType = (obj, type) => {
   if (typeof obj !== "object") {
@@ -182,7 +220,7 @@ let isType = (obj, type) => {
 
 /*
 * 除了Reg和date类型之外的深拷贝
-* @param [arr]
+* @param {parent}
 * */
 let copy = (parent) => {
   if (typeof parent !== "object" && typeof parent !== "function") {
@@ -249,5 +287,7 @@ export {
   validatePhone,
   validatePlate,
   validateVersionGt35,
-  checkSystem
+  checkSystem,
+  query,
+  urlToJson
 }

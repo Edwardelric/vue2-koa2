@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 
 import("./utils/util").then((...args) => {
-  console.log(args);
+  // console.log(args);
 })
 
 Vue.use(ajax)

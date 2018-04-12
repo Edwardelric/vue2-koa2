@@ -56,6 +56,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       "process.env": process.env.NODE_ENV
     }),
     new CleanWebpackPlugin(["dist"]),
+    new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   ]

@@ -22,13 +22,15 @@
 <script type="text/ecmascript-6">
   import SubNav from "./menu/subnav";
   import Panel from "../components/panel";
+  import axios from "axios";
 
 	export default {
 		data() {
 			return {};
 		},
     created() {
-		  this.$ajax.get("/api/string").then(res => {
+		  sessionStorage.setItem("token", "edwardelric");
+		  this.$ajax.get("/api/string",{"name": "dad"}).then(res => {
         console.log(res);
       })
     },
