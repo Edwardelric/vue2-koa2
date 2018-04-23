@@ -26,12 +26,16 @@
 
 	export default {
 		data() {
-			return {};
+			return {
+
+      };
 		},
     created() {
 		  sessionStorage.setItem("token", "edwardelric");
-		  this.$ajax.get("/api/string",{"name": "dad"}).then(res => {
-        console.log(res);
+		  this.$ajax.get("/api/string",{"name": "dad"}).then((res) => {
+		    //alert("complete")
+      }, (err) => {
+		    //alert("err")
       })
     },
     methods: {

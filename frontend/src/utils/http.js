@@ -1,4 +1,3 @@
-import Vue from "vue";
 import axios from 'axios';
 import router from "../router";
 
@@ -42,15 +41,15 @@ axios.interceptors.response.use((res) => {
       path: "/transition/switchBtn"
     })
   } else if (err.response.status === 404) {
-
+    console.log(404);
   } else if (err.response.status === 500) {
-
+    console.log(500);
   } else if (err.response.status === 502) {
-
+    console.log(502);
   } else if (err.response.status === 504) {
-
+    console.log(504);
   }
-  return Promise.reject(err)
+  return Promise.reject(err);
 });
 
 ajaxMethods.forEach((method) => {
