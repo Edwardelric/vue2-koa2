@@ -1,0 +1,19 @@
+.DS_Store
+node_modules/
+/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+yarn.lock
+
+# Editor directories and files
+.idea
+.idea/koa-decorate.iml
+.idea/workspace.xml
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+package-lock.json
