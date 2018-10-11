@@ -9,7 +9,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import draggable from "./draggable";
+  import draggable from "../utils/draggable";
 
 	export default {
 	  name: "picker-regions-slots",

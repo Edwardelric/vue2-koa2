@@ -12,6 +12,7 @@ import SwitchBtn from "@/pages/lib/transition/switchBtn";
 import PickerRegions from "@/pages/lib/components/pickerRegions";
 import Lottery from "@/pages/lib/components/Lottery";
 import Loadmore from "@/pages/lib/components/loadmore";
+import Tab from "@/pages/lib/components/tab";
 
 
 Vue.use(Router)
@@ -97,6 +98,15 @@ const routes =  [
       stage: 3
     },
     component: Loadmore
+  },
+  {
+    path: "/componentslists/tab",
+    name: "tab",
+    meta: {
+      title: "tab",
+      stage: 3
+    },
+    component: Tab
   }
 ];
 
