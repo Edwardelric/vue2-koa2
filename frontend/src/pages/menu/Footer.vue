@@ -34,14 +34,11 @@
 <style lang="scss">
   @import "../../assets/scss/mixins";
   .footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
+    flex: 0 0 8vh;
     display: flex;
     justify-content: space-around;
     align-items: center;
     width: 100%;
-    height: 8vh;
     border-top: 1px solid $gray;
     background: #fff;
     color: $gray;

@@ -1,6 +1,10 @@
 <template>
   <a class="ed-tab-item"
-     :style="Object.assign({}, $parent.tabItemStyle, calWidth, $parent.value === id ? activeStyle: {})"
+     :style="Object.assign({},
+            $parent.tabStyle,
+            calWidth,
+            $parent.value === id ? $parent.activeStyle: {}
+       )"
      @click="onItemClicked"
   >
     <div class="ed-tab-item-icon" v-if="$parent.fixBottom"><slot name="icon"></slot></div>
@@ -10,7 +14,7 @@
 
 <script type="text/ecmascript-6">
   export default {
-    name: 'edTabItem',
+    name: 'EdTabItem',
     data() {
       return {
         id: (this.$parent.$children.length || 1) - 1
@@ -22,11 +26,6 @@
       }
     },
     computed: {
-      activeStyle () {
-        return {
-          color: this.$parent.activeColor
-        }
-      },
       calWidth() {
         let width = Math.floor(document.documentElement.clientWidth || document.body.clientWidth) / this.$parent.canViewItemNum;
         return {

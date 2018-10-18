@@ -44,10 +44,13 @@
     height: 100%;
   }
   #app {
+    display: flex;
+    flex-flow: column nowrap;
     height: 100%;
   }
   .container {
-    height: 92vh;
+    flex: 1 0 0;
+    padding-bottom: 10px;
     overflow-y: auto;
     background: $gray;
   }

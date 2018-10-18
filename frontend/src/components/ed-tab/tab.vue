@@ -21,23 +21,37 @@
   import { windowInit } from '../utils/requestAnimationFrame'
 
   export default {
-    name: 'edTab',
+    name: 'EdTab',
     props: {
       value: {
         type: Number,
         default: 0
       },
+      fixBottom: {
+        type: Boolean,
+        default: false
+      },
       canViewItemNum: {
         type: Number,
         default: 3
       },
-      activeColor: {
-        type: String,
-        default: 'red'
+      lineWidthRate: {
+        type: Number,
+        default: 1
       },
-      fixBottom: {
-        type: Boolean,
-        default: false
+      tabStyle: {
+        type: Object,
+        default() {
+          return {};
+        }
+      },
+      activeStyle: {
+        type: Object,
+        default() {
+          return {
+            color: '#f58323'
+          };
+        }
       },
       additionalX: {
         type: Number,
@@ -60,20 +74,6 @@
       reBoundingDuration: {
         type: Number,
         default: 360
-      },
-      openReBoundingBarDuration: {
-        type: Boolean,
-        default: true
-      },
-      lineWidthRate: {
-        type: Number,
-        default: 1
-      },
-      tabItemStyle: {
-        type: Object,
-        default() {
-          return {};
-        }
       }
     },
     data() {
@@ -121,18 +121,18 @@
         }
       },
       activeBarStyle () {
-        if (this.openReBoundingBarDuration) {
+        if (this.reBoundingDuration) {
           return {
             transition: `all 300ms`,
             width: `${this.activeBarWidth}px`,
             transform: `translate3d(${this.activeBarX}px, 0, 0)`,
-            backgroundColor: this.activeColor
+            backgroundColor: this.activeStyle.color || '#f58323'
           };
         } else {
           return {
             width: `${this.activeBarWidth}px`,
             transform: `translate3d(${this.activeBarX}px, 0, 0)`,
-            backgroundColor: this.activeColor
+            backgroundColor: this.activeStyle.color || '#f58323'
           };
         }
       },
@@ -295,20 +295,21 @@
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+  @import "../ed-css/_mixins.scss";
   .ed-tab {
     position: relative;
     overflow: hidden;
     display: flex;
     width: 100%;
-    border-bottom: 1px solid #ddd;
-    background-color: rgba(255 ,255, 255, 1);
+    border-bottom: 1px solid $gray;
+    background-color: $white;
     &.ed-tab-fix-bottom {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      border-top: 1px solid #ccc;
+      border-top: 1px solid $gray;
       border-bottom: none;
       .ed-tab-item {
         border-bottom: none!important;
@@ -319,13 +320,13 @@
       box-sizing: border-box;
       display: flex;
       flex-flow: row nowrap;
-      padding: 10px 0;
+      padding: rem(10) 0;
       .ed-tab-active-bar {
         position: absolute;
         bottom: 0;
         left: 0;
-        width: 30px;
-        height: 3px;
+        width: rem(30);
+        height: rem(3);
         border-radius: 4px;
       }
     }

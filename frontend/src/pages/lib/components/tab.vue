@@ -7,14 +7,13 @@
       @change="changeFn"
     ></ed-tab>
     <div style="backgroundColor: #fff">
-      <div v-if="selectedId === 0">
+      <div v-if="selectedId === 0" class="tab-item">
         000000000
-        <div style="width: 1rem">12313</div>
       </div>
-      <div v-if="selectedId === 1">
+      <div v-if="selectedId === 1" class="tab-item">
         11111111
       </div>
-      <div v-if="selectedId === 2">
+      <div v-if="selectedId === 2" class="tab-item">
         22222
       </div>
       <div>
@@ -31,12 +30,12 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import EdTab from "@/components/edTab/index";
+  import EdTab from "@/components/ed-tab/index";
 
   export default {
     data() {
       return {
-        selectedId: 0,
+        selectedId: 6,
         items: [
           {label: '首页', icon: 'iconfont icon-shenfenzheng'},
           {label: '推荐', icon: 'iconfont icon-shenfenzheng'},
@@ -50,15 +49,16 @@
         ],
         options: {
           canViewItemNum: 5,
-          activeColor: '#f58323',
           fixBottom: false,
+
           reBoundingDuration: 0,
-          openReBoundingBarDuration: false,
-          tabItemStyle: {
-            fontSize: '12px'
+          tabStyle: {},
+          activeStyle: {
+            color: '#f58323',
+            fontSize: '15px'
           }
         },
-        subSelectedId: 0,
+        subSelectedId: 2,
         subItems: [
           {label: '全部提成'},
           {label: '销售提成'},
@@ -67,7 +67,9 @@
         ],
         subOptions: {
           canViewItemNum: 4,
-          activeColor: '#f58323',
+          activeStyle: {
+            color: '#f58323'
+          },
           fixBottom: false
         }
       };
@@ -78,11 +80,13 @@
     methods: {
       changeFn(...args) {
         this.options.reBoundingDuration = 360;
-        this.options.openReBoundingBarDuration = true;
-        this.selectedId = args[1]
+        //this.options.openReBoundingBarDuration = true;
+        this.selectedId = args[1];
+        this.subSelectedId = 0;
         console.log(args);
       },
       subChangeFn(...args) {
+        this.subSelectedId = args[1];
         console.log(args);
       }
     }
@@ -90,5 +94,14 @@
 </script>
 
 <style lang="scss">
-  @import "../../../assets/scss/mixins";
+  .tab-item {
+    padding: 10px;
+    text-align: center;
+  }
+  .tabClassName {
+    font-size: 12px;
+  }
+  .ativeClassName {
+    font-size: 15px;
+  }
 </style>
