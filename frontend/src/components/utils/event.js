@@ -1,4 +1,4 @@
-export function onEvent(target, event, handler, opts = {
+export function OnEvent(target, event, handler, opts = {
   capture: false,
   once: false,
   passive: false
@@ -6,7 +6,7 @@ export function onEvent(target, event, handler, opts = {
   target.addEventListener(event, handler, opts);
 }
 
-export function offEvent(target, event, handler) {
+export function OffEvent(target, event, handler) {
   target.removeEventListener(event, handler);
 }
 
