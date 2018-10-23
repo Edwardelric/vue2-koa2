@@ -8,7 +8,11 @@
     >
       <p slot="refreshDesc">aa</p>
       <p slot="refreshNoData">b</p>
-      <div v-for="(item, index) in list" class="list-padding">{{item}}</div>
+      <div v-for="(item, index) in list" class="list-padding">
+        {{item}}
+        <Icon name="icon-ding "></Icon>
+        <i class="icon iconfont icon-gerenxinxi_o"></i>
+      </div>
       <p slot="loadMoreDesc" class="loading-bg">当前正在加载中...</p>
       <p slot="loadMoreNoData" class="loading-bg">暂无更多数据</p>
     </LoadMore>
@@ -18,6 +22,7 @@
 <script type="text/ecmascript-6">
   import Vue from 'vue';
   import LoadMore from "../../../components/ed-load-more/index.vue";
+  import Icon from "../../../components/ed-icon/index.vue";
 
   export default {
     data() {
@@ -31,7 +36,7 @@
           refreshFinished: false,
           refreshClassName: 'refreshClassName',
           refreshNoData: 'refreshNoData',
-          enableLoadMore: false,
+          enableLoadMore: true,
           immediateCheck: false,
           distance: 10,
           loadMoreFinished: false,
@@ -78,12 +83,15 @@
       }
     },
     components: {
-      LoadMore
+      LoadMore,
+      Icon
     }
   }
 </script>
 
 <style lang="scss">
+  @import '../../../assets/font/iconfont.css';
+
   .load-more-wrapper {
 
     background: #fff;

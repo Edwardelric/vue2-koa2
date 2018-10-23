@@ -110,10 +110,14 @@
         }
       },
       style() {
+        let singWidth = Math.floor(document.documentElement.clientWidth || document.body.clientWidth) / this.canViewItemNum;
         if (this.fixBottom) {
-          return {};
+          return {
+            flex: `0 0 ${singWidth * this.$parent.items.length}px`   // 兼容ios6
+          };
         } else {
           return {
+            flex: `0 0 ${singWidth * this.$parent.items.length}px`,   //兼容ios6
             transitionTimingFunction: this.transitionTimingFunction,
             transitionDuration: `${this.transitionDuration}ms`,
             transform: `translate3d(${this.translateX}px, 0px, 0px)`

@@ -5,7 +5,7 @@
        @touchmove="touchMoveHandler"
        @touchend="touchEndHandler"
   >
-    <div class="refresh-wraper" v-if="enableRefresh" :class="refreshClass">
+    <div class="refresh-wraper" v-if="enableRefresh" :class="[this.refreshClassName, this.refreshNoData]">
       <slot name="refreshDesc" v-if="!value">
         <p>{{statusTxt}}即可刷新</p>
       </slot>
@@ -14,7 +14,7 @@
       </slot>
     </div>
     <slot></slot>
-    <div class="load-more-wrapper" v-if="enableLoadMore" :class="loadMoreClass">
+    <div class="load-more-wrapper" v-if="enableLoadMore" :class="[this.loadMoreClassName, this.loadMoreNoData]">
       <slot name="loadMoreDesc" v-if="value">
         <p>加载中...</p>
       </slot>
@@ -87,8 +87,6 @@
     },
 		data() {
 			return {
-        loadMoreClass: {},
-        refreshClass: {},
         scrollEventTarget: '',
         binded: false,
         untouchable: false,
@@ -97,21 +95,6 @@
         statusTxt: ''
       };
 		},
-    created() {
-	    let formatData = (keyName, curClassName) => {
-	      if (this[curClassName]) {
-	        this[keyName][curClassName] = true;
-        }
-      };
-	    if (this.enableRefresh) {
-        formatData('refreshClass', 'refreshClassName');
-        formatData('refreshClass', 'refreshNoData');
-      }
-	    if (this.enableLoadMore) {
-        formatData('loadMoreClass', 'refreshClassName');
-        formatData('loadMoreClass', 'refreshNoData');
-      }
-    },
     mounted() {
       this.scrollEventTarget = ScrollTools.getScrollEventTarget(this.$el);
 	    if (this.enableLoadMore) {

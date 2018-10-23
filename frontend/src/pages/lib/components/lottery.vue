@@ -1,16 +1,12 @@
 <template>
     <div class="lottery-wrapper">
       <Lottery
-        :data="data"
-        :width="'300'"
-        :animateType="'easeOut'"
-        :ajaxParams="{method:'GET',url:'https://www.easy-mock.com/mock/592e626b91470c0ac1fed9b6/products_1496212075258/member#!method=get'}"
-        :canvasWrapClassName="'canvasWrap'"
-        :indicatorClassName = "'indicator'"
-        :textColor="'#E5302F'"
-        v-on:initCompleted = "initCompleted"
+        v-model="angle"
+        v-bind="options"
+        @changeValueHandler="changeValueHandler"
       >
         <p slot="txt">开始<br/>抽奖</p>
+        <div slot="lotteryBg"><img src="../../../assets/reward.png"/></div>
       </Lottery>
       <p style="height:1px;background:red;"></p>
     </div>
@@ -22,48 +18,60 @@
 	export default {
 		data() {
 			return {
-        data: [
-          {
-            id: 0,
-            txt: "一等奖一等奖一等奖一等奖一等奖"
-          },
-          {
-            id: 1,
-            txt: "10猫币"
-          },
-          {
-            id: 2,
-            txt: "谢谢参与"
-          },
-          {
-            id: 3,
-            txt: "5猫币"
-          },
-          {
-            id: 4,
-            txt: "10元免费流量包"
-          },
-          {
-            id: 5,
-            txt: "20元免费流量包"
-          },
-          {
-            id: 6,
-            txt: "20猫币"
-          },
-          {
-            id: 7,
-            txt: "30元免费流量包"
-          },
-          {
-            id: 8,
-            txt: "100元免费流量包"
-          },
-          {
-            id: 9,
-            txt: "2猫币"
-          },
-        ]
+			  num: 1,
+        angle: 36,
+			  options: {
+          data: [
+            {
+              id: 0,
+              txt: "0一等奖一等奖一等奖一等奖一等奖"
+            },
+            {
+              id: 1,
+              txt: "1猫币"
+            },
+            {
+              id: 2,
+              txt: "2谢谢参与"
+            },
+            {
+              id: 3,
+              txt: "3猫币"
+            },
+            {
+              id: 4,
+              txt: "4元免费流量包"
+            },
+            {
+              id: 5,
+              txt: "5元免费流量包"
+            },
+            {
+              id: 6,
+              txt: "6猫币"
+            },
+            {
+              id: 7,
+              txt: "7元免费流量包"
+            },
+            {
+              id: 8,
+              txt: "8元免费流量包"
+            },
+            {
+              id: 9,
+              txt: "9元免费流量包"
+            }
+          ],
+          useCanvasDraw: false,
+          textColor: '#E5302F',
+          animateType: 'easeOut',
+          duration: 4000,
+          durationStep: 20,                     // 旋转递增时间步数
+          roundNum: 10,                         // 旋转的圈数
+          canvasWrapClassName: 'canvasWrap',
+          indicatorClassName: 'indicator'
+        }
       };
 		},
     mounted() {
@@ -73,13 +81,17 @@
       Lottery
     },
     methods: {
-		  initCompleted(data) {
-		    console.log("completed");
-		    console.log(data);
+      changeValueHandler(data) {
+        this.num += 1;
+		    this.angle = 36 * this.num;
+		    console.log(this.angle);
       }
     }
 	};
 </script>
 
 <style lang="scss">
+  .canvasWrap {
+    margin: 0 20px;
+  }
 </style>
