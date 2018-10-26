@@ -5,7 +5,7 @@
  * c: change in value（变化量）
  * d: duration（持续时间）
 */
-var Tween = {
+export default {
   Linear: function(t, b, c, d) { return c*t/d + b; },
   Quad: {
     easeIn: function(t, b, c, d) {
@@ -173,4 +173,3 @@ var Tween = {
     }
   }
 }
-Math.tween = Tween;

@@ -16,7 +16,7 @@
     <slot></slot>
     <div class="load-more-wrapper" v-if="enableLoadMore" :class="[this.loadMoreClassName, this.loadMoreNoData]">
       <slot name="loadMoreDesc" v-if="value">
-        <p>加载中...</p>
+        <div><EdSpinner/>加载中...</div>
       </slot>
       <slot name="loadMoreNoData" v-if="!value && loadMoreFinished">
         <p>无更多数据</p>
@@ -27,6 +27,7 @@
 
 <script type="text/ecmascript-6">
   import {ScrollTools, Throttle, OnEvent, OffEvent, Touch} from '../utils/index.js';
+  import EdSpinner from '../ed-spinner/index.vue';
 
 	export default {
 	  name: 'EdLoadMore',
@@ -103,6 +104,9 @@
           this.check();
         }
       }
+    },
+    components: {
+      EdSpinner
     },
     methods: {
       touchStartHandler(event) {

@@ -1,23 +1,24 @@
 <template>
   <div class="canvas-wrap" :class="canvasWrapClassName">
-    <div v-if="useCanvasDraw">
-      <canvas id="canvas" class="canvas "ref="canvasDom">您当前的版本不支持canvas功能</canvas>
-      <div class="indicator" ref="indicator" :class="indicatorClassName" @click="startMove">
-        <div class="inner">
-          <slot name="txt">
-            <p>开始<br/>抽奖</p>
-          </slot>
-        </div>
-      </div>
+    <canvas id="canvas" class="canvas" v-if="useCanvasDraw" ref="canvasDom" :style="style">您当前的版本不支持canvas功能</canvas>
+    <div ref="rotateDom" :class="canvasWrapClassName">
+      <slot v-if="!useCanvasDraw" name="lotteryBg"></slot>
     </div>
-    <div v-if="!useCanvasDraw">
-      <slot name="lotteryBg"></slot>
+    <div class="indicator" ref="indicator" :class="indicatorClassName" @click="startMove">
+      <div class="inner" :class="{disabled: curMaxChanceNum<=0}">
+        <slot name="txt">
+          <p>抽奖<br/>{{curMaxChanceNum <= 0 ? 0 : curMaxChanceNum}}次</p>
+        </slot>
+      </div>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import {Tween} from '../utils/index.js';
+
   export default {
+    name: 'EdLottery',
     props: {
       value: {
         type: Number,
@@ -29,11 +30,27 @@
       },
       useCanvasDraw: {
         type: Boolean,
-        default: true
+        default: false
+      },
+      fontSize: {
+        type: Number,
+        default: 16
       },
       textColor: {
         type: String,
         default: '#E5302F'
+      },
+      oddPlateColor: {
+        type: String,
+        default: '#fff'
+      },
+      evenPlateColor: {
+        type: String,
+        default: '#FFF4D6'
+      },
+      maxChanceNum: {
+        type: Number,
+        default: 3
       },
       animateType: {
         type: String,
@@ -58,6 +75,10 @@
       indicatorClassName: {
         type: String,
         default: ''
+      },
+      indicatorDisabled: {
+        type: String,
+        default: ''
       }
     },
     data() {
@@ -72,7 +93,7 @@
           radiusRate: 3,                // 内外层半径比例
           txtRadius: 0,                 // 文字半径位置
           dpiRate: 1,
-          defaultTxtColor: "#E5302F"    // 文字默认颜色
+          defaultTxtColor: '#E5302F'    // 文字默认颜色
         },
         movePlate: {
           isMoving: false,              // 是否在运动
@@ -80,37 +101,28 @@
           timer: null,
           moveTo: 360 * this.roundNum   // 移动到什么地方
         },
-        angleVal: this.value
+        curMaxChanceNum: this.maxChanceNum
       };
     },
     created() {
-      this.tween = {                        // 运动库对象
-        linear(t, b, c, d) {
-          return c * t / d + b;
-        },
-        easeOut(t, b, c, d) {
-          return -c *(t /= d)*(t-2) + b;
-        },
-        easeSlowOut(t, i, e, s, h) {
-          return -s * ((i = i / h - 1) * i * i * i - 1) + e;
-        }
-      };
       if (!Array.isArray(this.data)) {
         // 数据不是数组类型的则报错停止执行
-        console.error("data type should be Array");
+        console.error('data type should be Array');
         return false;
       } else if (360 % this.data.length) {
-        console.error("data can be divided for 360")
+        console.error('data can be divided for 360');
         return false;
       }
       this.canvasData.divideAngle = 360 / this.data.length;
-      this.tweenFn = this.tween[this.animateType] ? this.tween[this.animateType] : this.tween["easeOut"];
+      this.tweenFn = Tween.Quad[this.animateType] ? Tween.Quad[this.animateType] : Tween.Quad['easeOut'];
     },
     mounted() {
-      this.canvasDom = this.$refs.canvasDom;
       this.indicator = this.$refs.indicator;
       if (this.useCanvasDraw) {
+        this.canvasDom = this.$refs.canvasDom;
         this.init();
+      } else {
+        this.canvasDom = this.$refs.rotateDom;
       }
     },
     methods: {
@@ -130,8 +142,8 @@
         let canvasWidth = this.canvasData.canvasWidth = this.formatToEven(this.$el.offsetWidth);
         this.canvasDom.width = canvasWidth * this.canvasData.dpiRate;
         this.canvasDom.height = canvasWidth * this.canvasData.dpiRate;
-        this.canvasDom.style.width = canvasWidth + "px";
-        this.canvasDom.style.height = canvasWidth + "px";
+        this.canvasDom.style.width = canvasWidth + 'px';
+        this.canvasDom.style.height = canvasWidth + 'px';
       },
       drawPlate() {
         let ctx = this.canvasData.ctx;
@@ -145,11 +157,11 @@
         this.indicator.style.cssText = `width: ${innerRadius * 2}px; height: ${innerRadius * 2}px`;
         ctx.scale(this.canvasData.dpiRate, this.canvasData.dpiRate);
         ctx.translate(canvasData.canvasWidth / 2, canvasData.canvasWidth / 2);
-        ctx.strokeStyle = "transparent";
+        ctx.strokeStyle = 'transparent';
         this.data.forEach((item, i) => {
           let angle =  i * arc;
           let txt = item.txt;
-          ctx.fillStyle = item.color ? item.color : ((i % 2) ? "#FFFFFF" : "#FFF4D6");
+          ctx.fillStyle = item.color ? item.color : ((i % 2) ? this.oddPlateColor : this.evenPlateColor);
           ctx.beginPath();
           ctx.arc(0, 0, outerRadius, angle, angle + arc, false);
           ctx.arc(0, 0, innerRadius, angle + arc, angle, true);
@@ -166,12 +178,12 @@
               ctx.fillText(subItem, -ctx.measureText(subItem).width / 2, subIndex * line_height)
             });
           } else {
-            ctx.font = "16px Microsoft YaHei";
+            ctx.font = `${this.fontSize}px Microsoft YaHei`;
             ctx.fillText(txt, -ctx.measureText(item.txt).width / 2, 0);
           }
           ctx.restore();
         });
-        this.$emit("drawPlateComplete");
+        this.$emit('drawPlateComplete');
       },
       move() {
         let movePlate = this.movePlate;
@@ -184,7 +196,7 @@
         movePlate.durationStep += this.durationStep;
         if (t <= d) {
           if (dest > 360) {
-            dest = dest % 360;
+            dest %= 360;
           } else {
             dest = Math.floor(dest);
           }
@@ -195,17 +207,14 @@
           movePlate.moveTo = 360 * this.roundNum;
           movePlate.durationStep = 0;
           movePlate.isMoving = false;
+          this.$emit('animateFinishedHandler');
         }
       },
       startMove() {
-        let movePlate = this.movePlate;
-        if (movePlate.isMoving) {return false;}
-        let angles = this.angleVal;
-        if (angles > 360) {
-          angles %= 360;
+        if (!this.movePlate.isMoving && this.curMaxChanceNum > 0) {
+          this.curMaxChanceNum -= 1;
+          this.$emit('changeValueHandler');
         }
-        this.movePlate.moveTo = this.movePlate.moveTo + angles;
-        this.$emit('changeValueHandler');
       },
       formatToEven(data) {
         if (!(data % 2)) {
@@ -225,10 +234,18 @@
         return strArr;
       }
     },
+    computed: {
+      style() {
+        return {
+          width: `${this.canvasData.canvasWidth}px`,
+          height: `${this.canvasData.canvasWidth}px`
+        }
+      }
+    },
     watch: {
-      value(newValue, oldValue) {
-        if (newValue !== oldValue) {
-          let angles = newValue;
+      value(newVal, oldVal) {
+        if (newVal !== oldVal) {
+          let angles = newVal;
           if (angles > 360) {
             angles %= 360;
           }
@@ -275,6 +292,9 @@
         height: 80%;
         border-radius: 50%;
         background: rgba(188, 0, 20, 1);
+        &.disabled {
+          background: rgba(0, 0, 0, 0.5);
+        }
         p {
           color: rgba(252, 176, 12, 1);
           font-size: 16px;

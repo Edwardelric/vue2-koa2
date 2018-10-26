@@ -13,6 +13,7 @@ import PickerRegions from "@/pages/lib/components/pickerRegions";
 import Lottery from "@/pages/lib/components/Lottery";
 import Loadmore from "@/pages/lib/components/loadmore";
 import Tab from "@/pages/lib/components/tab";
+import Swiper from "@/pages/lib/components/swiper";
 
 
 Vue.use(Router)
@@ -107,6 +108,15 @@ const routes =  [
       stage: 3
     },
     component: Tab
+  },
+  {
+    path: "/componentslists/swiper",
+    name: "swiper",
+    meta: {
+      title: "swiper",
+      stage: 3
+    },
+    component: Swiper
   }
 ];
 

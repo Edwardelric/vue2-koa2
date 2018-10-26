@@ -20,7 +20,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import Vue from 'vue';
   import LoadMore from "../../../components/ed-load-more/index.vue";
   import Icon from "../../../components/ed-icon/index.vue";
 
@@ -93,7 +92,6 @@
   @import '../../../assets/font/iconfont.css';
 
   .load-more-wrapper {
-
     background: #fff;
   }
   .list-padding {

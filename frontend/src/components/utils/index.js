@@ -10,5 +10,8 @@ export {default as  Throttle} from  './throttle';
 // touch
 export {default as Touch} from './touch';
 
+// Tween
+export {default as Tween} from './tween';
+
 
 

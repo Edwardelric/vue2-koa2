@@ -1,20 +1,20 @@
 export default {
   methods: {
-    touchStart: function touchStart(event) {
+    touchStart(event) {
       this.resetTouchStatus();
       this.startX = event.touches[0].clientX;
       this.startY = event.touches[0].clientY;
     },
-    touchMove: function touchMove(event) {
+    touchMove(event) {
       var touch = event.touches[0];
       this.deltaX = touch.clientX - this.startX;
       this.deltaY = touch.clientY - this.startY;
       this.offsetX = Math.abs(this.deltaX);
       this.offsetY = Math.abs(this.deltaY);
-      this.direction = this.offsetX > this.offsetY ? 'horizontal' : this.offsetX < this.offsetY ? 'vertical' : '';
+      this.touchMoveDirection = this.offsetX > this.offsetY ? 'horizontal' : this.offsetX < this.offsetY ? 'vertical' : '';
     },
-    resetTouchStatus: function resetTouchStatus() {
-      this.direction = '';
+    resetTouchStatus() {
+      this.touchMoveDirection = '';
       this.deltaX = 0;
       this.deltaY = 0;
       this.offsetX = 0;
