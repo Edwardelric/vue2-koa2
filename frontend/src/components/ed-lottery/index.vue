@@ -1,5 +1,5 @@
 <template>
-  <div class="canvas-wrap" :class="canvasWrapClassName">
+  <div class="canvas-wrap" :class="canvasWrapClassName" ref="canvasWrap">
     <canvas id="canvas" class="canvas" v-if="useCanvasDraw" ref="canvasDom" :style="style">您当前的版本不支持canvas功能</canvas>
     <div ref="rotateDom" :class="canvasWrapClassName">
       <slot v-if="!useCanvasDraw" name="lotteryBg"></slot>
@@ -68,6 +68,14 @@
         type: Number,
         default: 10
       },
+      radiusRate: {
+        type: Number,
+        default: 3
+      },
+      txtOffset: {
+        type: Number,
+        default: 40
+      },
       canvasWrapClassName: {
         type: String,
         default: ''
@@ -90,7 +98,6 @@
           divideAngle: 0,               // 等分角度
           outerRadius: 0,               // 外层园半径
           innerRadius: 0,               // 内层园半径
-          radiusRate: 3,                // 内外层半径比例
           txtRadius: 0,                 // 文字半径位置
           dpiRate: 1,
           defaultTxtColor: '#E5302F'    // 文字默认颜色
@@ -117,6 +124,7 @@
       this.tweenFn = Tween.Quad[this.animateType] ? Tween.Quad[this.animateType] : Tween.Quad['easeOut'];
     },
     mounted() {
+      this.canvasWrap = this.$refs.canvasWrap;
       this.indicator = this.$refs.indicator;
       if (this.useCanvasDraw) {
         this.canvasDom = this.$refs.canvasDom;
@@ -149,8 +157,8 @@
         let ctx = this.canvasData.ctx;
         let canvasData = this.canvasData;
         let outerRadius = canvasData.outerRadius = canvasData.canvasWidth / 2;
-        let innerRadius = canvasData.innerRadius = Math.floor(outerRadius / canvasData.radiusRate);
-        let txtRadius = canvasData.txtRadius = outerRadius - 40;
+        let innerRadius = canvasData.innerRadius = Math.floor(outerRadius / this.radiusRate);
+        let txtRadius = canvasData.txtRadius = outerRadius - this.txtOffset;
         let arc = Math.PI * 2 / this.data.length;
         let line_height = 17;
 
@@ -183,6 +191,9 @@
           }
           ctx.restore();
         });
+        let offsetAngle = -90 - (360 / this.data.length) / 2;
+        this.$refs.canvasWrap.style.transform = `rotate(${offsetAngle}deg)`;
+        this.$refs.indicator.style.transform = `translate(-50%, -50%)  rotate(${offsetAngle * -1}deg)`;
         this.$emit('drawPlateComplete');
       },
       move() {
@@ -207,7 +218,16 @@
           movePlate.moveTo = 360 * this.roundNum;
           movePlate.durationStep = 0;
           movePlate.isMoving = false;
-          this.$emit('animateFinishedHandler');
+          if (this.useCanvasDraw) {
+            let curAngle = c;
+            let singleAngle = 360 / this.data.length;
+            while (curAngle > 360) {
+              curAngle -= 360;
+            }
+            this.$emit('animateFinishedHandler', Math.ceil(curAngle / singleAngle));
+          } else {
+            this.$emit('animateFinishedHandler');
+          }
         }
       },
       startMove() {
@@ -251,6 +271,11 @@
           }
           this.movePlate.moveTo = 360 * this.roundNum + angles;
           this.move();
+        }
+      },
+      data(newVal, oldVal) {
+        if (newVal !== oldVal) {
+          this.init();
         }
       }
     }

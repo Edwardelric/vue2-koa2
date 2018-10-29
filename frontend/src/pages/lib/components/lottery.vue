@@ -28,11 +28,11 @@
           data: [
             {
               id: 0,
-              txt: "0一等奖一等奖一等奖一等奖一等奖"
+              txt: "new0一等奖一等奖一等奖一等奖一等奖"
             },
             {
               id: 1,
-              txt: "1猫币"
+              txt: "new1猫币"
             },
             {
               id: 2,
@@ -57,23 +57,15 @@
             {
               id: 7,
               txt: "7元免费流量包"
-            },
-            {
-              id: 8,
-              txt: "6猫币"
-            },
-            {
-              id: 9,
-              txt: "7元免费流量包"
             }
           ],
           fontSize: 20,
           textColor: '#E5302F',
           maxChanceNum: 4,
           animateType: 'easeOut',
-          duration: 6000,
+          duration: 1000,
           durationStep: 20,                     // 旋转递增时间步数
-          roundNum: 10,                         // 旋转的圈数
+          roundNum: 1,                         // 旋转的圈数
           canvasWrapClassName: 'canvasWrap',
           indicatorClassName: 'indicator',
           indicatorDisabled: 'indicatorDisabled'
@@ -81,7 +73,58 @@
       };
 		},
     mounted() {
-
+//      this.$ajax.post('https://www.easy-mock.com/mock/592e626b91470c0ac1fed9b6/products_1496212075258/moneylist#!method=post').then(res => {
+//
+//      }).catch(err => {
+//
+//      }).finally(() => {
+//        setTimeout(() => {
+//
+//
+//        this.options.data = [
+//          {
+//            id: 0,
+//            txt: "new0一等奖一等奖一等奖一等奖一等奖"
+//          },
+//          {
+//            id: 1,
+//            txt: "new1猫币"
+//          },
+//          {
+//            id: 2,
+//            txt: "2谢谢参与"
+//          },
+//          {
+//            id: 3,
+//            txt: "3猫币"
+//          },
+//          {
+//            id: 4,
+//            txt: "4元免费流量包"
+//          },
+//          {
+//            id: 5,
+//            txt: "5元免费流量包"
+//          },
+//          {
+//            id: 6,
+//            txt: "6猫币"
+//          },
+//          {
+//            id: 7,
+//            txt: "7元免费流量包"
+//          },
+//          {
+//            id: 8,
+//            txt: "6猫币"
+//          },
+//          {
+//            id: 9,
+//            txt: "7元免费流量包"
+//          }
+//        ]
+//        }, 4000);
+//      })
     },
     components: {
       Lottery
@@ -90,11 +133,11 @@
       changeValueHandler(data) {
         this.options.maxChanceNum -= 1;
         this.rotateNum += 1;
-		    this.angle = this.angle + (this.rotateNum * 360) ;
+		    this.angle = this.angle + (this.rotateNum * 360) + 36 ;
 		    console.log(this.angle);
       },
-      animateFinishedHandler() {
-        console.log(123);
+      animateFinishedHandler(index) {
+        console.log(index);
       }
     }
 	};
