@@ -1,6 +1,6 @@
 <template>
-  <div class="ed-swiper-item" :class="swiperItemClassName"
-    :style="style"
+  <div class="ed-swiper-item" ref="swiperItem"
+    :style="[style, itemSize]"
     @touchstart.prevent.stop="touchStartHandler"
     @touchmove.prevent.stop="touchMoveHandler"
     @touchend.prevent.stop="touchEndHandler"
@@ -16,13 +16,21 @@
 	  name: 'EdSwiperItem',
     mixins: [Touch],
     props: {
-      initialSwipe: {
+      value: {
         type: Number,
         default: 0
       },
       vertical: {
         type: Boolean,
         default: false
+      },
+      width: {
+        type: Number,
+        default: 0,
+      },
+      height: {
+        type: Number,
+        default: 0
       },
       threshold: {
         type: Number,
@@ -59,32 +67,30 @@
         deltaY: 0,
         distance: 0,
         isTouching: false,
-        currentIndex: this.initialSwipe,
+        currentIndex: this.value,
         swipes: [],
         computedWidth: 0,
-        computedHeight: 100
+        computedHeight: 0,
+        itemSize: {}
       };
 		},
     mounted() {
-	    this.computedWidth = this.width || this.$el.offsetWidth;
-	    this.computedHeight = this.height || this.$el.offsetHeight;
       this.init();
       OnEvent(window, 'resize', this.onResize, true);
     },
     methods: {
-	    // 判断是否是scroll还是touchmove
-      isScrollCheck(deltaX, deltaY) {
-        if (Math.pow(deltaX, 2) + Math.pow(deltaY, 2) >= 25) {
-          return Math.atan2(Math.abs(deltaY),Math.abs(deltaX)) * 180 / Math.PI > 45;
-        } else {
-          return false;
-        }
-      },
       onResize() {
         this.init();
       },
       init() {
         clearTimeout(this.timer);
+        this.computedWidth = this.width || this.$el.offsetWidth;
+        this.computedHeight = this.height || this.$el.offsetHeight;
+        if (this.vertical) {
+          this.itemSize = {height: `${this.maxSize}px`};
+        } else {
+          this.itemSize = {width: `${this.maxSize}px`};
+        }
         this.isTouching = true;
         this.swipes.forEach((swipe) => {
           swipe.offset = 0;
@@ -140,6 +146,7 @@
         if (_move) {
           this.currentIndex += _move;
         }
+        this.$emit('input', this.currentIndex);
         this.distance = offset - this.currentIndex * this.size;
       },
       autoPlay() {
@@ -172,6 +179,14 @@
             this.move(-this.count);
           }
         }
+      },
+      // 判断是否是scroll还是touchmove
+      isScrollCheck(deltaX, deltaY) {
+        if (Math.pow(deltaX, 2) + Math.pow(deltaY, 2) >= 25) {
+          return Math.atan2(Math.abs(deltaY),Math.abs(deltaX)) * 180 / Math.PI > 45;
+        } else {
+          return false;
+        }
       }
     },
     computed: {
@@ -179,7 +194,7 @@
         return this.$parent.items.length;
       },
       size() {
-	      return this.vertical ? this.$el.offsetHeight : this.$el.offsetWidth;
+        return this.vertical ? this.computedHeight : this.computedWidth;
       },
       maxSize() {
 	      return this.count * this.size;
@@ -196,18 +211,19 @@
           transitionTimingFunction: this.timingFunction,
           transitionDuration: this.isTouching ? '0s' : `${this.duration}ms`,
           transform: this.vertical ? `translate3d(0px, ${this.distance}px, 0px)` : `translate3d(${this.distance}px, 0px, 0px)`
-        };
+        }
+      },
+      styleSize() {
+        if (this.vertical) {
+          return {height: this.maxSize};
+        } else {
+          return {width: this.maxSize};
+        }
       }
     },
     watch: {
 	    swipes() {
         this.init();
-      },
-      initialSwipe(newVal, oldVal) {
-	      if (newVal !== oldVal) {
-          this.currentIndex = newVal;
-          this.init();
-        }
       },
       autoplay(newVal, oldVal) {
 	      if (newVal !== oldVal) {
@@ -224,8 +240,7 @@
 
 <style lang="scss" scoped>
   .ed-swiper-item {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
+    width: 100%;
+    height: 100%;
   }
 </style>

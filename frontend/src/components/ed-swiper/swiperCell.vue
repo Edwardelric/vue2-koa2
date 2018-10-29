@@ -30,8 +30,8 @@
     computed: {
       style() {
         return {
-          width: `${this.$parent.computedWidth}px`,
-          height: `${this.$parent.computedHeight}px`,
+          width: this.$parent.computedWidth ? `${this.$parent.computedWidth}px` : '100%' ,
+          height: this.$parent.computedHeight ? `${this.$parent.computedHeight}px` : '100%',
           transform: this.$parent.vertical ? `translate3d(0px, ${this.offset}px, 0px)` : `translate3d(${this.offset}px, 0px, 0px)`,
           flex: this.$parent.vertical
         }
@@ -39,16 +39,14 @@
     },
     destroyed: function destroyed() {
       this.$parent.swipes.splice(this.$parent.swipes.indexOf(this), 1);
-    },
-    watch: {
-
     }
 	};
 </script>
 
 <style lang="scss" scoped>
   .ed-swiper-cell {
-    flex: 0 0 100vw;
+    float: left;
+    width: 100%;
     img {
       width: 100%;
     }

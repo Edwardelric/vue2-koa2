@@ -1,5 +1,5 @@
 <template>
-  <div class="ed-swiper-wrapper">
+  <div class="ed-swiper-wrapper" :style="style">
     <SwiperItem
       v-model="val"
       v-bind="options"
@@ -10,12 +10,20 @@
         </slot>
       </SwiperCell>
     </SwiperItem>
+    <SwiperIndicator
+      v-model="val"
+      :items="items"
+      :swiperIndicatorClassName="options.swiperIndicatorClassName"
+    >
+      <slot name="indicator"></slot>
+    </SwiperIndicator>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import SwiperItem from './swiperItem.vue';
   import SwiperCell from './swiperCell.vue';
+  import SwiperIndicator from './SwiperIndicator.vue';
 
 	export default {
 	  name: 'EdSwiper',
@@ -40,16 +48,34 @@
 			  val: this.value
       };
 		},
+    computed: {
+      style() {
+        if (this.options.vertical && this.options.height) {
+          return {
+            height: `${this.options.height}px`
+          }
+        }
+      }
+    },
+    watch: {
+	    val(newVal, oldVal) {
+	      if (newVal !== oldVal) {
+	        this.$emit('onChange', newVal);
+        }
+      }
+    },
     components: {
-      SwiperCell,
-      SwiperItem
+      SwiperItem,
+	    SwiperCell,
+      SwiperIndicator
     }
 	};
 </script>
 
 <style lang="scss" scoped>
   .ed-swiper-wrapper {
-    width: 100%;
     overflow: hidden;
+    position: relative;
+    width: 100%;
   }
 </style>
