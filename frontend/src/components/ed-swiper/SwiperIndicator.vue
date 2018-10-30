@@ -1,5 +1,5 @@
 <template>
-  <div class="ed-swiper-indicator" :class="swiperIndicatorClassName">
+  <div class="ed-swiper-indicator" :class="[{'ed-swiper-indicator-vertical': vertical},swiperIndicatorClassName]">
     <slot>
       <i v-for="(item, index) in items" :key="index" :class="{
         'active': indicatorIndex === index
@@ -20,6 +20,10 @@
       items: {
         type: Array,
         default: []
+      },
+      vertical: {
+        type: Boolean,
+        default: false
       },
       swiperIndicatorClassName: {
         type: String,
@@ -69,6 +73,15 @@
       background-color: $gray-dark;
       &.active {
         background: $blue;
+      }
+    }
+    &.ed-swiper-indicator-vertical {
+      left: 90%;
+      bottom: 50%;
+      transform: translate(50%, 50%);
+      i {
+        display: block;
+        margin: rem(6) 0;
       }
     }
   }

@@ -11,9 +11,10 @@
       </SwiperCell>
     </SwiperItem>
     <SwiperIndicator
+      v-if="options.showIndicators"
       v-model="val"
       :items="items"
-      :swiperIndicatorClassName="options.swiperIndicatorClassName"
+      v-bind="options"
     >
       <slot name="indicator"></slot>
     </SwiperIndicator>

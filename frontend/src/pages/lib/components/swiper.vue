@@ -38,11 +38,12 @@
         ],
         options: {
 			    labelKey: 'url',
-          vertical: false,
+          vertical: true,
           height: 240,
           threshold: 50,
           autoplay: 2000,
           loop: true,
+          showIndicators: true,
           timingFunction: 'ease',
           swiperItemClassName: 'swiperItemClassName',
 //          swiperIndicatorClassName: 'swiper-indicator'
