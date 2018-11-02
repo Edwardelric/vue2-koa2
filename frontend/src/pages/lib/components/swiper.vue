@@ -18,6 +18,7 @@
         <!--</div>-->
       <!--</template>-->
     </Swiper>
+    <p>12312</p>
   </div>
 </template>
 
@@ -27,22 +28,24 @@
 	export default {
 		data() {
 			return {
-			  val: 1,
+			  val: 0,
         text: [1, 2, 3, 4, 5],
         items: [
-          {url: '../../../static/11.jpeg'},
-          {url: '../../../static/22.jpeg'},
-          {url: '../../../static/33.jpeg'},
-          {url: '../../../static/44.jpg'},
-          {url: '../../../static/55.jpg'}
+          {src: '../../../static/11.jpeg'},
+          {src: '../../../static/22.jpeg'},
+          {src: '../../../static/33.jpeg'},
+          {src: '../../../static/44.jpg'},
+          {src: '../../../static/55.jpg'}
         ],
         options: {
-			    labelKey: 'url',
-          vertical: true,
+			    labelKey: 'src',
+          animateType: 'swiper',
+          vertical: false,
           height: 240,
           threshold: 50,
-          autoplay: 2000,
-          loop: true,
+          depthSpaceBetween: 10,
+          autoplay: 1000,
+          loop: false,
           showIndicators: true,
           timingFunction: 'ease',
           swiperItemClassName: 'swiperItemClassName',
@@ -52,6 +55,7 @@
 		},
     methods: {
       onChange(index) {
+        console.log(index);
         this.val = index;
       }
     },

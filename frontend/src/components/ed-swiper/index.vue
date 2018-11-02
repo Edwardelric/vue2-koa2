@@ -4,9 +4,9 @@
       v-model="val"
       v-bind="options"
     >
-      <SwiperCell v-for="(item, index) in items" :key="index">
+      <SwiperCell v-for="(item, index) in items" :key="index" :animateType="options.animateType">
         <slot>
-          <img :src="item[options.labelKey || 'url']" />
+          <a :href="item[options.url]"><img :src="item[options.labelKey || 'src']" /></a>
         </slot>
       </SwiperCell>
     </SwiperItem>
@@ -51,7 +51,7 @@
 		},
     computed: {
       style() {
-        if (this.options.vertical && this.options.height) {
+        if (this.options.height) {
           return {
             height: `${this.options.height}px`
           }

@@ -1,5 +1,6 @@
 <template>
   <div class="ed-swiper-item" ref="swiperItem"
+       :class="swiperItemClassName"
     :style="[style, itemSize]"
     @touchstart.prevent.stop="touchStartHandler"
     @touchmove.prevent.stop="touchMoveHandler"
@@ -20,6 +21,10 @@
         type: Number,
         default: 0
       },
+      animateType: {
+        type: String,
+        default: 'swiper'
+      },
       vertical: {
         type: Boolean,
         default: false
@@ -35,6 +40,10 @@
       threshold: {
         type: Number,
         default: 50
+      },
+      depthSpaceBetween: {
+        type: Number,
+        default: 0
       },
       autoplay: {
         type: Number,
@@ -71,11 +80,24 @@
         swipes: [],
         computedWidth: 0,
         computedHeight: 0,
-        itemSize: {}
+        itemSize: {},
+        depthPositionArr: [],
+        depthRatio: [0.6, 0.4]
       };
 		},
     mounted() {
-      this.init();
+      this.computedWidth = this.width || this.$el.offsetWidth;
+      this.computedHeight = this.height || this.$el.offsetHeight;
+      if (this.checkAnimateType('swiper')) {
+        if (this.vertical) {
+          this.itemSize = {height: `${this.maxSize}px`};
+        } else {
+          this.itemSize = {width: `${this.maxSize}px`};
+        }
+        this.init();
+      } else if (this.checkAnimateType('depth')) {
+	      this.initDepth();
+      }
       OnEvent(window, 'resize', this.onResize, true);
     },
     methods: {
@@ -84,13 +106,6 @@
       },
       init() {
         clearTimeout(this.timer);
-        this.computedWidth = this.width || this.$el.offsetWidth;
-        this.computedHeight = this.height || this.$el.offsetHeight;
-        if (this.vertical) {
-          this.itemSize = {height: `${this.maxSize}px`};
-        } else {
-          this.itemSize = {width: `${this.maxSize}px`};
-        }
         this.isTouching = true;
         this.swipes.forEach((swipe) => {
           swipe.offset = 0;
@@ -100,26 +115,95 @@
         }
         this.autoPlay();
       },
+      initDepth() {
+        // 默认贴近两边
+        let depthDistance = (this.computedWidth - this.computedWidth * this.depthRatio[1]) / 2 / this.depthRatio[1];
+        this.depthDistance = depthDistance;
+        // 最小距离
+        let spaceBetween = (this.computedWidth - this.computedWidth * this.depthRatio[0]) / 2 / this.depthRatio[1];
+        this.isTouching = true;
+        let arr = [];
+        for (let i = 0; i < this.count; i++) {
+          arr[i] = {};
+          arr[i].x = ((i) => {
+            if (i === 1) {
+              return Math.max(depthDistance - this.depthSpaceBetween, spaceBetween);
+            } else if (i === this.count - 1) {
+              return -Math.max(depthDistance - this.depthSpaceBetween, spaceBetween);
+            } else {
+              return 0;
+            }
+          })(i);
+          arr[i].y = 0;
+          arr[i].scale = ((i) => {
+            if (i === 0) {
+              return 0.6;
+            } else {
+              return 0.4;
+            }
+          })(i);
+          arr[i].zIndex = ((i) => {
+            if (i === 0) {
+              return 99;
+            } else {
+              return 98;
+            }
+          })(i);
+          arr[i].opacity = ((i) => {
+            if (i === 0 || i === 1 || i === this.count - 1) {
+              return 1;
+            } else {
+              return 0;
+            }
+          })(i);
+        }
+        this.depthPositionArr = arr;
+        this.setPosition();
+        this.depthAutoPlay();
+      },
+      setPosition() {
+        this.swipes.forEach((item, index) => {
+          let {x, y, scale, zIndex, opacity} = this.depthPositionArr[index];
+          item.x = x;
+          item.y = y;
+          item.scale = scale;
+          item.zIndex = zIndex;
+          item.opacity = opacity;
+        });
+      },
       touchStartHandler(event) {
         if (!this.touchable) {return;}
         this.clear();
         this.isTouching = true;
         this.touchStart(event);
-        this.correctPosition();
+        if (this.checkAnimateType('swiper')) {
+          this.correctPosition();
+        }
       },
       touchMoveHandler(event) {
         if (!this.touchable) {return;}
         this.isTouching = true;
         this.touchMove(event);
-        this.move(0, this.deltaRange);
+        if (this.checkAnimateType('swiper')) {
+          this.move(0, this.deltaRange);
+        } else {
+          this.depthMove(0, this.deltaRange);
+        }
       },
       touchEndHandler(event) {
         if (!this.touchable) {return;}
         this.isTouching = false;
-        if (this.delta) {
-          this.move(Math.abs(this.delta) > this.threshold ? (this.delta > 0 ? -1 : 1) : 0);
+        if (this.checkAnimateType('swiper')) {
+          if (this.delta) {
+            this.move(Math.abs(this.delta) > this.threshold ? (this.delta > 0 ? -1 : 1) : 0);
+          }
+          this.autoPlay();
+        } else {
+          if (this.delta) {
+            this.depthMove(Math.abs(this.delta) > this.threshold ? (this.delta > 0 ? -1 : 1) : 0);
+          }
+          this.depthAutoPlay();
         }
-        this.autoPlay();
       },
       move(_move, offset) {
         if (_move === void 0) {
@@ -139,7 +223,7 @@
         if (outOfBounds || count <= 1) {
           return false;
         }
-        if (this.loop) {
+        if (this.loop && swipes) {
           swipes[0].offset = atLast && (delta < 0 || _move > 0) ? maxSize: 0;
           swipes[count - 1].offset = atFirst && (delta > 0 || _move < 0) ? -maxSize : 0;
         }
@@ -148,6 +232,23 @@
         }
         this.$emit('input', this.currentIndex);
         this.distance = offset - this.currentIndex * this.size;
+      },
+      depthMove(_move, offset) {
+        if (_move > 0) {
+          this.depthPositionArr.unshift(this.depthPositionArr.pop());
+        } else if (_move < 0){
+          this.depthPositionArr.push(this.depthPositionArr.shift());
+        }
+        this.setPosition();
+        if (_move) {
+          this.currentIndex += _move;
+        }
+        if (this.currentIndex < 0) {
+          this.currentIndex = this.count - 1;
+        } else if (this.currentIndex >= this.count) {
+          this.currentIndex = 0;
+        }
+        this.$emit('input', this.currentIndex);
       },
       autoPlay() {
         if (this.count <= 1 || !this.autoplay) { return;}
@@ -165,7 +266,20 @@
             }
             this.autoPlay();
           }, 30);
-        }, this.autoplay);
+        }, this.autoplay < this.duration ?  this.duration + 1000 : this.autoplay);
+      },
+      depthAutoPlay() {
+        if (this.count <= 2) {return;}
+        if (!this.autoplay) {return;}
+        this.clear();
+        this.timer = setTimeout(() => {
+          this.isTouching = true;
+          setTimeout(() => {
+            this.isTouching = false;
+            this.depthMove(1);
+            this.depthAutoPlay();
+          }, 30);
+        }, this.autoplay < this.duration ?  this.duration + 1000 : this.autoplay);
       },
       clear() {
         clearTimeout(this.timer);
@@ -179,6 +293,9 @@
             this.move(-this.count);
           }
         }
+      },
+      checkAnimateType(name) {
+        return this.animateType === name;
       },
       // 判断是否是scroll还是touchmove
       isScrollCheck(deltaX, deltaY) {
@@ -207,10 +324,14 @@
 	      return Math.min(Math.max(this.delta, -this.size), this.size);
       },
       style() {
-        return {
-          transitionTimingFunction: this.timingFunction,
-          transitionDuration: this.isTouching ? '0s' : `${this.duration}ms`,
-          transform: this.vertical ? `translate3d(0px, ${this.distance}px, 0px)` : `translate3d(${this.distance}px, 0px, 0px)`
+        if (this.checkAnimateType('swiper')) {
+          return {
+            transitionTimingFunction: this.timingFunction,
+            transitionDuration: this.isTouching ? '0s' : `${this.duration}ms`,
+            transform: this.vertical ? `translate3d(0px, ${this.distance}px, 0px)` : `translate3d(${this.distance}px, 0px, 0px)`
+          }
+        } else {
+          return {};
         }
       },
       styleSize() {
@@ -223,17 +344,17 @@
     },
     watch: {
 	    swipes() {
-        this.init();
+        //this.init();
       },
-      autoplay(newVal, oldVal) {
-	      if (newVal !== oldVal) {
-	        if (!newVal)  {
-	          this.clear();
-          } else {
-	          this.autoplay();
-          }
-        }
-      }
+//      autoplay(newVal, oldVal) {
+//	      if (newVal !== oldVal) {
+//	        if (!newVal)  {
+//	          this.clear();
+//          } else {
+//	          this.autoplay();
+//          }
+//        }
+//      }
     }
 	};
 </script>
