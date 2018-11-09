@@ -76,6 +76,10 @@
         type: Number,
         default: 40
       },
+      rewardOffset: {
+        type: Number,
+        default: 30
+      },
       canvasWrapClassName: {
         type: String,
         default: ''
@@ -144,7 +148,15 @@
           ctx.backingStorePixelRatio || 1;
         this.canvasData.dpiRate = devicePixelRatio / backingStoreRatio;
         this.setWidth();
-        this.drawPlate();
+        this.hasRewardUrl = this.data.some((item) => {
+          return item.rewardUrl;
+        });
+        if (this.hasRewardUrl) {
+          this.recordImg = [];
+          this.checkImgState();
+        } else {
+          this.drawPlate();
+        }
       },
       setWidth() {
         let canvasWidth = this.canvasData.canvasWidth = this.formatToEven(this.$el.offsetWidth);
@@ -152,6 +164,30 @@
         this.canvasDom.height = canvasWidth * this.canvasData.dpiRate;
         this.canvasDom.style.width = canvasWidth + 'px';
         this.canvasDom.style.height = canvasWidth + 'px';
+      },
+      loadImg(url, index) {
+        return new Promise((resolve, reject) => {
+          let img = new Image();
+          img.src = url;
+          img.onload = () => {
+            this.recordImg[index] = img;
+            resolve();
+          };
+          img.onerror = () => {
+            resolve();
+          }
+        });
+      },
+      checkImgState() {
+        let data = this.data.filter((item, index) => {
+          return item.rewardUrl;
+        });
+        let arr = data.map((item, index) => {
+          return this.loadImg(item.rewardUrl, index);
+        });
+        Promise.all(arr).then(() => {
+          this.drawPlate();
+        });
       },
       drawPlate() {
         let ctx = this.canvasData.ctx;
@@ -188,6 +224,15 @@
           } else {
             ctx.font = `${this.fontSize}px Microsoft YaHei`;
             ctx.fillText(txt, -ctx.measureText(item.txt).width / 2, 0);
+          }
+          if (this.recordImg[i]) {
+            ctx.drawImage(
+              this.recordImg[i],
+              -Math.min(34, this.recordImg[i].width) / 2,
+              this.rewardOffset,
+              Math.min(34, this.recordImg[i].width),
+              Math.min(20, this.recordImg[i].height)
+            );
           }
           ctx.restore();
         });

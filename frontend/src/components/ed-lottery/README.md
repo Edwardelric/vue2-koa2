@@ -20,6 +20,7 @@
  roundNum         | Number  | 转盘旋转次数 |  10
  radiusRate       | Number  | 内园半径与外圆半径比例
  txtOffset        | Number  | 文字距离外圆长度
+ rewardOffset     | Number  | 中奖图片位置
  canvasWrapClassName  | String  | 转盘className |  
  indicatorClassName   | String  | 点击抽奖按钮className |  
  indicatorDisabled    | String  | 禁用点击抽奖按钮className |  

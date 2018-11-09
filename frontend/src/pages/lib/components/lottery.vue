@@ -28,23 +28,28 @@
           data: [
             {
               id: 0,
-              txt: "new0一等奖一等奖一等奖一等奖一等奖"
+              txt: "new0一等奖一等奖一等奖一等奖一等奖",
+              rewardUrl: 'https://ss2.bdstatic.com/8_V1bjqh_Q23odCf/pacific/1663490295.jpg'
             },
             {
               id: 1,
-              txt: "new1猫币"
+              txt: "new1猫币",
+              rewardUrl: 'https://images2018.cnblogs.com/blog/1328957/201802/1328957-20180224202017104-1842421338.png'
             },
             {
               id: 2,
-              txt: "2谢谢参与"
+              txt: "2谢谢参与",
+              rewardUrl: 'https://images2018.cnblogs.com/blog/1328957/201802/1328957-20180224202017104-1842421338.png'
             },
             {
               id: 3,
-              txt: "3猫币"
+              txt: "3猫币",
+              rewardUrl: 'https://images2018.cnblogs.com/blog/1328957/201802/1328957-20180224202017104-1842421338.png'
             },
             {
               id: 4,
-              txt: "4元免费流量包"
+              txt: "4元免费流量包",
+              rewardUrl: 'https://images2018.cnblogs.com/blog/1328957/201802/1328957-20180224202017104-1842421338.png'
             },
             {
               id: 5,
@@ -56,7 +61,8 @@
             },
             {
               id: 7,
-              txt: "7元免费流量包"
+              txt: "7元免费流量包",
+              rewardUrl: 'https://images2018.cnblogs.com/blog/1328957/201802/1328957-20180224202017104-1842421338.png'
             }
           ],
           fontSize: 20,
@@ -66,6 +72,8 @@
           duration: 1000,
           durationStep: 20,                     // 旋转递增时间步数
           roundNum: 1,                         // 旋转的圈数
+          txtOffset: 30,
+          rewardOffset: 30,
           canvasWrapClassName: 'canvasWrap',
           indicatorClassName: 'indicator',
           indicatorDisabled: 'indicatorDisabled'
