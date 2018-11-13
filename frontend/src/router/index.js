@@ -5,6 +5,7 @@ import Home from "@/pages/home";
 import Discover from "@/pages/discover";
 import Info from "@/pages/info";
 import Search from "@/pages/search";
+import Tips from "@/pages/tips";
 import Ui from "@/pages/ui";
 
 import SwitchBtn from "@/pages/lib/transition/switchBtn";
@@ -45,6 +46,15 @@ const routes =  [
       state: 1
     },
     component: Ui
+  },
+  {
+    path: "/tips",
+    namme: "tips",
+    meta: {
+      title: "tips",
+      state: 1
+    },
+    component: Tips
   },
   {
     path: "/info",

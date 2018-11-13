@@ -61,7 +61,7 @@
             },
             {
               id: 7,
-              txt: "7元免费流量包",
+              txt: "7元免费流量&lt;br\/&gt;包",
               rewardUrl: 'https://images2018.cnblogs.com/blog/1328957/201802/1328957-20180224202017104-1842421338.png'
             }
           ],
@@ -141,7 +141,7 @@
       changeValueHandler(data) {
         this.options.maxChanceNum -= 1;
         this.rotateNum += 1;
-		    this.angle = this.angle + (this.rotateNum * 360) + 36 ;
+		    this.angle = this.angle + (this.rotateNum * 360) + 36;
 		    console.log(this.angle);
       },
       animateFinishedHandler(index) {

@@ -1,6 +1,6 @@
 <template>
     <ul class="footer">
-      <li v-for="(item, index) in menu" @click="navigatorTo(item.url)" :class="{active: curUrl === item.url}">
+      <li v-for="(item, index) in menu" :key="index" @click="navigatorTo(item.url)" :class="{active: curUrl === item.url}">
         <img :src="item.imgUrl" />
         <img :src="item.selectedUrl" />
         <p>{{item.txt}}</p>

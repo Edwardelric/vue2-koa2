@@ -18,6 +18,12 @@ const footerMenu = [
     selectedUrl: "../../static/ui-active.png"
   },
   {
+    url: "tips",
+    txt: "积累",
+    imgUrl: "../../static/discover.png",
+    selectedUrl: "../../static/discover-active.png"
+  },
+  {
     url: "info",
     txt: "我",
     imgUrl: "../../static/info.png",

@@ -23,7 +23,9 @@ module.exports = {
     /**
      * Source Maps
      */
-
+    useEslint: false,
+    showEslintErrorsInOverlay: false,
+    
     // https://webpack.js.org/configuration/devtool/#development
     devtool: 'cheap-module-eval-source-map',
 

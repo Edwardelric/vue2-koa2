@@ -1,4 +1,4 @@
-export function OnEvent(target, event, handler, opts = {
+export function OnEvent (target, event, handler, opts = {
   capture: false,
   once: false,
   passive: false

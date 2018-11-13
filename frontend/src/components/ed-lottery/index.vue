@@ -216,9 +216,9 @@
           ctx.translate(Math.cos(angle + arc / 2) * txtRadius, Math.sin(angle + arc / 2) * txtRadius);
           ctx.rotate(angle + arc / 2 + Math.PI / 2);
           if (txt.length > 6) {
-            let tests = this.getDivideStr(txt, 6);
+            let texts = this.getDivideStr(txt, 6);
             ctx.font = "12px Microsoft YaHei";
-            tests.forEach((subItem, subIndex) => {
+            texts.forEach((subItem, subIndex) => {
               ctx.fillText(subItem, -ctx.measureText(subItem).width / 2, subIndex * line_height)
             });
           } else {
