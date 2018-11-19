@@ -222,9 +222,14 @@
               ctx.fillText(subItem, -ctx.measureText(subItem).width / 2, subIndex * line_height)
             });
           } else {
+            ctx.rotate(Math.PI);
             ctx.font = `${this.fontSize}px Microsoft YaHei`;
             ctx.fillText(txt, -ctx.measureText(item.txt).width / 2, 0);
           }
+          ctx.restore();
+          ctx.save();
+          ctx.translate(Math.cos(angle + arc / 2) * txtRadius, Math.sin(angle + arc / 2) * txtRadius);
+          ctx.rotate(angle + arc / 2 + Math.PI / 2);
           if (this.recordImg[i]) {
             ctx.drawImage(
               this.recordImg[i],
