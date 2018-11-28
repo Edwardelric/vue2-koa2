@@ -4276,11 +4276,11 @@
 // wrapper function for providing a more flexible interface
 // without getting yelled at by flow
   function createElement (
-    context,
-    tag,
-    data,
-    children,
-    normalizationType,
+    context,  // vm 对象
+    tag,      // 标签名
+    data,     // 节点相关的属性
+    children, // 子元素
+    normalizationType, // 子元素归一化的处理级别
     alwaysNormalize
   ) {
     if (Array.isArray(data) || isPrimitive(data)) {
@@ -4407,9 +4407,9 @@
     // so that we get proper render context inside it.
     // args order: tag, data, children, normalizationType, alwaysNormalize
     // internal version is used by render functions compiled from templates
-    vm._c = function (a, b, c, d) { return createElement(vm, a, b, c, d, false); };
+    vm._c = function (a, b, c, d) { return createElement(vm, a, b, c, d, false); }; // 编译模板生成的render函数执行
     // normalization is always applied for the public version, used in
-    // user-written render functions.
+    // user-written render functions.      // 自己编写的render函数
     vm.$createElement = function (a, b, c, d) { return createElement(vm, a, b, c, d, true); };
     
     // $attrs & $listeners are exposed for easier HOC creation.
@@ -4462,7 +4462,7 @@
       // render self
       var vnode;
       try {
-        vnode = render.call(vm._renderProxy, vm.$createElement);
+        vnode = render.call(vm._renderProxy, vm.$createElement);      // 返回一个VNode对象(虚拟dom)
       } catch (e) {
         handleError(e, vm, "render");
         // return error render result,
@@ -4582,10 +4582,10 @@
   
   function resolveConstructorOptions (Ctor) {
     var options = Ctor.options;
-    if (Ctor.super) {
+    if (Ctor.super) {     // 以extend options 为基础 合并其他options的值
       var superOptions = resolveConstructorOptions(Ctor.super);
       var cachedSuperOptions = Ctor.superOptions;
-      if (superOptions !== cachedSuperOptions) {
+      if (superOptions !== cachedSuperOptions) {              // 更新Ctor上options属性可能有extend和mixin共同作用的情况
         // super option changed,
         // need to resolve new options.
         Ctor.superOptions = superOptions;
@@ -5969,7 +5969,7 @@
     
     return function patch (oldVnode, vnode, hydrating, removeOnly, parentElm, refElm) {
       if (isUndef(vnode)) {
-        if (isDef(oldVnode)) { invokeDestroyHook(oldVnode); }
+        if (isDef(oldVnode)) { invokeDestroyHook(oldVnode); }   // destroy 销毁VNode， 主要用在destroy生命周期上
         return
       }
       
@@ -5979,7 +5979,7 @@
       if (isUndef(oldVnode)) {
         // empty mount (likely as component), create new root element
         isInitialPatch = true;
-        createElm(vnode, insertedVnodeQueue, parentElm, refElm);
+        createElm(vnode, insertedVnodeQueue, parentElm, refElm);  // 如果oldVNode未定义，则直接调用createEle
       } else {
         var isRealElement = isDef(oldVnode.nodeType);
         if (!isRealElement && sameVnode(oldVnode, vnode)) {
@@ -8677,7 +8677,7 @@
         var textEnd = html.indexOf('<');
         if (textEnd === 0) {
           // Comment:
-          if (comment.test(html)) {
+          if (comment.test(html)) {                           // 过滤掉注释
             var commentEnd = html.indexOf('-->');
             
             if (commentEnd >= 0) {
@@ -8690,7 +8690,7 @@
           }
           
           // http://en.wikipedia.org/wiki/Conditional_comment#Downlevel-revealed_conditional_comment
-          if (conditionalComment.test(html)) {
+          if (conditionalComment.test(html)) {                              // 过滤掉 ']>'
             var conditionalEnd = html.indexOf(']>');
             
             if (conditionalEnd >= 0) {
@@ -8700,7 +8700,7 @@
           }
           
           // Doctype:
-          var doctypeMatch = html.match(doctype);
+          var doctypeMatch = html.match(doctype);       // 过滤掉DOCTYPE
           if (doctypeMatch) {
             advance(doctypeMatch[0].length);
             continue
@@ -8789,7 +8789,7 @@
     // Clean up any remaining tags
     parseEndTag();
     
-    function advance (n) {
+    function advance (n) {      // 记录索引index的位置
       index += n;
       html = html.substring(n);
     }
@@ -8919,15 +8919,15 @@
   
   /*  */
   
-  var onRE = /^@|^v-on:/;
-  var dirRE = /^v-|^@|^:/;
-  var forAliasRE = /(.*?)\s+(?:in|of)\s+(.*)/;
+  var onRE = /^@|^v-on:/;         // 是否是事件属性
+  var dirRE = /^v-|^@|^:/;        // v-x | @ | :绑定数据或时间的语法
+  var forAliasRE = /(.*?)\s+(?:in|of)\s+(.*)/; // v-for 的判断
   var forIteratorRE = /,([^,\}\]]*)(?:,([^,\}\]]*))?$/;
   var stripParensRE = /^\(|\)$/g;
   
-  var argRE = /:(.*)$/;
-  var bindRE = /^:|^v-bind:/;
-  var modifierRE = /\.[^.]+/g;
+  var argRE = /:(.*)$/;   // 匹配: 冒号开头的属性
+  var bindRE = /^:|^v-bind:/;  // v-bind: | : 绑定数据的语法
+  var modifierRE = /\.[^.]+/g;  // 是匹配@click.stop 等属性中的修饰符
   
   var decodeHTMLCached = cached(he.decode);
 
@@ -8967,7 +8967,7 @@
   ) {
     warn$2 = options.warn || baseWarn;
     
-    platformIsPreTag = options.isPreTag || no;
+    platformIsPreTag = options.isPreTag || no;       // 是否是pre标签
     platformMustUseProp = options.mustUseProp || no;
     platformGetTagNamespace = options.getTagNamespace || no;
     
