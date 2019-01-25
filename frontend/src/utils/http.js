@@ -1,82 +1,58 @@
 import axios from 'axios';
-import router from "../router";
+import router from '../router';
+import { isLoading } from './util';
 
-axios.defaults.headers = { 'X-Requested-With': 'XMLHttpRequest' };
-axios.defaults.timeout = 10000;
-axios.defaults.validateStatus = (status) => {
-  return status >= 200 && status < 300;
-}
-
-let ajaxMethods = ["get", "post"];
 let ajax = {};
-let tempStorage = 0;
+let instance = axios.create({
+  baseUrl: '',
+  timeout: 1000,
+  headers: {'X-Custom-Header': 'foobar'}
+});
 
-axios.interceptors.request.use((config) => {
-  tempStorage++;
-  console.log("start loading");
-  if (sessionStorage.token) {
-    config.headers.Authorization = sessionStorage.token;
-  }
+instance.loadingTimes = 0;
+instance.interceptors.request.use((config) => {
+  instance.loadingTimes++;
+  isLoading(true, config.opts);
   return config;
 }, function (error) {
-  console.log("弹窗error")
+  isLoading(false, config.opts);
   return Promise.reject(error);
 });
 
-axios.interceptors.response.use((res) => {
-  tempStorage--;
-  if (!tempStorage) {
-    console.log("end loading1");
+instance.interceptors.response.use((res) => {
+  instance.loadingTimes--;
+  if (!instance.loadingTimes) {
+    isLoading(false, res.config.opts);
   }
-  if (res.data && !res.data.success) {
-    console.log("response error");
-    return Promise.reject(res.data.error.message);
+  if ([200, 302, 304].indexOf(res.status) > -1) {
+    return Promise.resolve(res);
+  } else {
+    return Promise.reject(res.data);
   }
-  return Promise.resolve(res);
 }, (err) => {
-  tempStorage = 0;
-  console.log("end loading2");
-  if (err.response.status === 403) {
-    router.push({
-      path: "/transition/switchBtn"
-    })
-  } else if (err.response.status === 404) {
-    console.log(404);
-  } else if (err.response.status === 500) {
-    console.log(500);
-  } else if (err.response.status === 502) {
-    console.log(502);
-  } else if (err.response.status === 504) {
-    console.log(504);
-  }
+  instance.loadingTimes = 0;
+  isLoading(false, res.config.opts);
   return Promise.reject(err);
 });
 
-ajaxMethods.forEach((method) => {
-  ajax[method] = (url, data, headers, auth) => {
+['get', 'post'].forEach((item, index) => {
+  ajax[item] = (url, data = {}, opts = {}) => {
     return new Promise((resolve, reject) => {
-      let options = {
-        method,
-        url,
-      };
-      if (method === "get") {
-        options.params = data || {};
+      let options = {url, opts};
+      if (item === 'get') {
+        // get请求
+        options = Object.assign({}, options, {method: 'get', params: data});
       } else {
-        options.data = data || {};
+        // post请求
+        options = Object.assign({}, options, {method: 'post', data});
       }
-      if (headers) {
-        options.headers = headers || {};
-      }
-      if (auth) {
-        options.auth = auth || {};
-      }
-      axios(options).then((res) => {
+      instance(options).then(res => {
         resolve(res.data);
-      }).catch((err) => {
+      }).catch(err => {
         reject(err);
-      });
+      })
     });
-  }
+  };
 });
 
 export default {

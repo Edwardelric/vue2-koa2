@@ -1,73 +1,83 @@
-const Koa = require('koa')
-const app = new Koa()
-const views = require('koa-views')
-const json = require('koa-json')
-const onerror = require('koa-onerror')
-const bodyparser = require('koa-bodyparser')
-const logger = require('koa-logger')
-let mongoose = require("mongoose")
+const koa = require('koa');
+const app = new koa();
+const Router = require('koa-router');
+const bodyParser = require('koa-bodyparser');
+const cors = require('koa2-cors');
+const { connect, initSchema } = require('./database/init');
 
-// brew install mongodb (https://www.cnblogs.com/junqilian/p/4109580.html)
-// mongodb linux 配置 https://blog.csdn.net/a123demi/article/details/70238972
-// brew services start mongodb | mongod --config /usr/local/etc/mongod.conf
-// 上面的命令会出现  Successfully started `mongodb`  这样类似开启mongodb的提示。。表示mongdb开启成功
-// mongo
-// show dbs 显示当前数据库的列表
-// use 数据库名 可以切换数据库|如果没有这个表名，那么会新建
-// db 当前数据库的对象或集合
-// show dbs   show collections db   db.collections.find()  db.collections.remove({})
-// db.collection.find() 当前表的全部行数据
-// db.数据库名.insert({key,value}) 是插入数据库
+app.use(bodyParser());
+app.use(cors());
 
-// Mongoose 中有3个重要的概念,分别是Schema、Model、Entity
-// Schema 生成 Model, Model 生成 Document ， Model和Document 都可对数据库操作造成影响， 但Model比Document更具操作性
-// model() 方法，将Schema编译为model, model()方法的第一个参数是模型名称
+(async() => {
+	await connect();
+	initSchema();
+})();
 
-// ps -ef | grep mongod 停止服务  kill -9  id
-const index = require('./routes/index')
+let user = require('./controller/user.js');
+let goods = require('./controller/goods.js');
 
-// error handler
-onerror(app)
+let router = new Router();
+router.use('/user', user.routes());
+router.use('/goods', goods.routes());
 
-// middlewares
-app.use(bodyparser({
-  enableTypes:['json', 'form', 'text']
-}))
-app.use(json())
-app.use(logger())
-app.use(require('koa-static')(__dirname + '/public'))
+app.use(router.routes());
+app.use(router.allowedMethods());
 
-app.use(views(__dirname + '/views', {
-  extension: 'ejs'
-}))
+module.exports = app;
 
-// logger
-app.use(async (ctx, next) => {
-  const start = new Date()
-  await next()
-  const ms = new Date() - start
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
-})
-
-app.use(async (ctx, next) => {
-	//connect mongodb
-	// await mongoose.connect("mongodb://localhost/eduline", (err) => {
-	await mongoose.connect("mongodb://10.47.12.111:27017/eduline", (err) => {
-	  if (err) {
-		  console.log("连接失败");
-	  } else {
-		  console.log("连接成功");
-	  }
-  });
-  await next();
-})
-
-// routes
-app.use(index.routes(), index.allowedMethods())
-
-// error-handling
-app.on('error', (err, ctx) => {
-  console.error('server error', err, ctx)
-});
-
-module.exports = app
+// const Koa = require('koa')
+// const app = new Koa()
+// const views = require('koa-views')
+// const json = require('koa-json')
+// const onerror = require('koa-onerror')
+// const bodyparser = require('koa-bodyparser')
+// const logger = require('koa-logger')
+// let mongoose = require("mongoose")
+//
+// const index = require('./routes/index')
+//
+// // error handler
+// onerror(app)
+//
+// // middlewares
+// app.use(bodyparser({
+//   enableTypes:['json', 'form', 'text']
+// }))
+// app.use(json())
+// app.use(logger())
+// app.use(require('koa-static')(__dirname + '/public'))
+//
+// app.use(views(__dirname + '/views', {
+//   extension: 'ejs'
+// }))
+//
+// // logger
+// app.use(async (ctx, next) => {
+//   const start = new Date()
+//   await next()
+//   const ms = new Date() - start
+//   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
+// })
+//
+// app.use(async (ctx, next) => {
+// 	//connect mongodb
+// 	// await mongoose.connect("mongodb://localhost/eduline", (err) => {
+// 	await mongoose.connect("mongodb://10.47.12.111:27017/eduline", (err) => {
+// 	  if (err) {
+// 		  console.log("连接失败");
+// 	  } else {
+// 		  console.log("连接成功");
+// 	  }
+//   });
+//   await next();
+// })
+//
+// // routes
+// app.use(index.routes(), index.allowedMethods())
+//
+// // error-handling
+// app.on('error', (err, ctx) => {
+//   console.error('server error', err, ctx)
+// });
+//
+// module.exports = app

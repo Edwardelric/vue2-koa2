@@ -2,89 +2,11 @@
 @import "./_mixins";
 @import "./icon";
 
-@mixin flex {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  align-items: center;
-}
-@mixin textAlign($dir: left) {
-  text-align: $dir;
-}
-@mixin ellipsis($width: 100%) {
-  @if($width == 100%) {
-    width: 100%;
-  }
-  @else{
-    width: rem($width);
-  }
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 body {
- font-family: PingFang-Medium, PingFangSC-Regular, Helvetica;
+ font-family: "PingFang SC",miui,system-ui,-apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,sans-serif;
 }
 
 .flex {
   @include flex;
 }
 
-.ellipsis {
-  @include ellipsis;
-}
-
-.text-left {
-  @include textAlign(left);
-}
-.text-center{
-  @include textAlign(center);
-}
-.text-right {
-  @include textAlign(right);
-}
-
-.panel {
-  .panel-header {
-    margin-bottom: rem(8);
-    padding: rem(8);
-    background: $white;
-    p {
-      padding-left: rem(8);
-      border-left: rem(10) solid $selected;
-      font-size: rem(16);
-      line-height: rem(16);
-    }
-  }
-  .panel-content {
-    margin-bottom: rem(8);
-    padding: rem(8) rem(8) 0 rem(8);
-    background: $white;
-    color: $gray;
-    line-height: rem(20);
-    font-weight: normal;
-    img {
-      width: 100%;
-      height: rem(200);
-    }
-    h3 {
-      font-size: rem(16);
-    }
-    h4 {
-      font-size: rem(14);
-    }
-  }
-}
-.btn {
-  width: 90%;
-  height: 40px;
-  margin: 0 auto;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  line-height: 40px;
-  text-align: center;
-  a {
-    display: block;
-  }
-}
