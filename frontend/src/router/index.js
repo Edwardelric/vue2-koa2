@@ -5,6 +5,7 @@ import Home from '@/pages/home/home';
 import Register from '@/pages/register/register';
 import Login from '@/pages/login/login';
 import Goods from '@/pages/goods/goods';
+import LearnDirectivve from '@/pages/learn/learndirective';
 
 
 Vue.use(Router)
@@ -41,6 +42,14 @@ const routes =  [
       title: '商品详情'
     },
     component: Goods
+  },
+  {
+    path: '/learnDirectivve',
+    name: 'LearnDirectivve',
+    meta: {
+      title: '学习指令'
+    },
+    component: LearnDirectivve
   }
 ];
 
