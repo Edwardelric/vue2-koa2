@@ -11,14 +11,14 @@
 <script type="text/ecmascript-6">
   import Vue from 'vue';
 
-  beforeCreated  // 初始化之前
-  created        // 创建完成
-  beforeMount    // 挂载之前
-  mointed        // 挂载
-  beforeUpdate   // 数据更新之前
-  updated        // 数据更新
-  beforeDestroy  // 销毁之前
-  destroyed      // 销毁
+  // beforeCreated  // 初始化之前
+  // created        // 创建完成
+  // beforeMount    // 挂载之前
+  // mointed        // 挂载
+  // beforeUpdate   // 数据更新之前
+  // updated        // 数据更新
+  // beforeDestroy  // 销毁之前
+  // destroyed      // 销毁
 
 
   Vue.directive('jspang', {
