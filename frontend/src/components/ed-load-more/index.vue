@@ -29,13 +29,17 @@
   import {ScrollTools, Throttle, OnEvent, OffEvent, Touch} from '../utils/index.js';
   import EdSpinner from '../ed-spinner/index.vue';
 
-	export default {
-	  name: 'EdLoadMore',
+  export default {
+    name: 'EdLoadMore',
     mixins: [Touch],
     props: {
       value: {
-	      type: Boolean,
+        type: Boolean,
         default: false
+      },
+      direction: {
+        type: String,
+        default: 'vertical'
       },
       enableRefresh: {
         type: Boolean,
@@ -66,11 +70,11 @@
         default: true
       },
       immediateCheck: {
-	      type: Boolean,
+        type: Boolean,
         default: false
       },
       distance: {
-	      type: Number,
+        type: Number,
         default: 10
       },
       loadMoreFinished: {
@@ -78,27 +82,28 @@
         default: false
       },
       loadMoreClassName: {
-	      type: String,
+        type: String,
         default: ''
       },
       loadMoreNoData: {
-	      type: String,
+        type: String,
         default: ''
       }
     },
-		data() {
-			return {
+    data() {
+      return {
         scrollEventTarget: '',
         binded: false,
         untouchable: false,
         moveDistance: 0,
         status: '',
-        statusTxt: ''
+        statusTxt: '',
+        touched: false
       };
-		},
+    },
     mounted() {
       this.scrollEventTarget = ScrollTools.getScrollEventTarget(this.$el);
-	    if (this.enableLoadMore) {
+      if (this.enableLoadMore) {
         this.handler(true);
         if (this.immediateCheck) {
           this.check();
@@ -110,6 +115,7 @@
     },
     methods: {
       touchStartHandler(event) {
+        this.touched = true;
         if (!this.untouchable && this.getCeiling() && this.enableRefresh) {
           this.moveDistance = 0;
           this.touchStart(event);
@@ -169,10 +175,8 @@
         let reachBottom = false;
         let el = this.$el;
         let scrollEventTarget = this.scrollEventTarget;
-
         let viewportScrollTop = ScrollTools.getScrollTop(scrollEventTarget);
         let viewportBottom = viewportScrollTop + ScrollTools.getVisibleHeight(scrollEventTarget);
-
         if (scrollEventTarget === el) {
           reachBottom = scrollEventTarget.scrollHeight - viewportBottom < this.distance;
         } else {
@@ -186,10 +190,14 @@
       }
     },
     computed: {
-	    transform() {
-	      return {
-          transition: `all ${this.duration}ms linear`,
-          transform: `translate3d(0, ${this.moveDistance}px, 0)`
+      transform() {
+        if (this.touched) {
+          return {
+            transition: `all ${this.duration}ms linear`,
+            transform: `translate3d(0, ${this.moveDistance}px, 0)`
+          }
+        } else {
+          return {};
         }
       }
     },
@@ -200,7 +208,7 @@
         }
       }
     }
-	};
+  };
 </script>
 
 <style lang="scss" scoped>
