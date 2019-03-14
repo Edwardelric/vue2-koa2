@@ -15,6 +15,7 @@ import Lottery from "@/pages/lib/components/Lottery";
 import Loadmore from "@/pages/lib/components/loadmore";
 import Tab from "@/pages/lib/components/tab";
 import Swiper from "@/pages/lib/components/swiper";
+import NoticeBar from "@/pages/lib/components/noticeBar";
 
 
 Vue.use(Router)
@@ -127,6 +128,15 @@ const routes =  [
       stage: 3
     },
     component: Swiper
+  },
+  {
+    path: "/componentslists/noticeBar",
+    name: "NoticeBar",
+    meta: {
+      title: "swiper",
+      stage: 3
+    },
+    component: NoticeBar
   }
 ];
 

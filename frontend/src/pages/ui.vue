@@ -5,6 +5,7 @@
     <li class="btn"><router-link to="/componentslists/loadmore">上拉下拉加载更多</router-link></li>
     <li class="btn"><router-link to="/componentslists/tab">tab</router-link></li>
     <li class="btn"><router-link to="/componentslists/swiper">swiper</router-link></li>
+    <li class="btn"><router-link to="/componentslists/noticeBar">noticeBar</router-link></li>
     <li class="text-center">-----------------------------------------------</li>
     <li class="btn"><router-link to="/transition/switchBtn">switch开关效果</router-link></li>
   </ul>
