@@ -1,6 +1,5 @@
 import axios from 'axios';
 import router from "../router";
-
 axios.defaults.headers = { 'X-Requested-With': 'XMLHttpRequest' };
 axios.defaults.timeout = 10000;
 axios.defaults.validateStatus = (status) => {
