@@ -8,13 +8,25 @@ class Store {
         })
         this.mutations = options.mutations || [];
         this.actions = options.actions || [];
+        this.handleGetters(options.getters);
+    }
+    handleGetters(getters) {
+        this.getters = {}
+        Object.keys(getters).forEach(key=>{
+            Object.defineProperty(this.getters,key,{
+                get:()=>{
+                    return getters[key](this.state)
+                }
+            })
+        })
     }
     commit(type, arg) {
         this.mutations[type](this.state, arg);
     }
     dispatch(type, arg) {
+        console.log(this)
         this.actions[type]({
-            commit: this.commit.bind(this),
+            commit: this.commit.bind(this),                // 当前对象this问题
             state: this.state
         }, arg)
     }
