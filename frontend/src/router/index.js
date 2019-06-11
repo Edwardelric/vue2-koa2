@@ -9,6 +9,7 @@ import Tips from "@/pages/tips";
 import Ui from "@/pages/ui";
 
 import SwitchBtn from "@/pages/lib/transition/switchBtn";
+import VirtualScrollList from "@/pages/lib/transition/virtualScrollList";
 
 import PickerRegions from "@/pages/lib/components/pickerRegions";
 import Lottery from "@/pages/lib/components/Lottery";
@@ -83,6 +84,15 @@ const routes =  [
       stage: 3
     },
     component: SwitchBtn
+  },
+  {
+    path: "/transition/virtualScrollList",
+    name: 'virtualScrollList',
+    meta: {
+        title: "list列表优化",
+        stage: 3
+    },
+    component: VirtualScrollList
   },
   {
     path: "/componentslists/pickerRegions",

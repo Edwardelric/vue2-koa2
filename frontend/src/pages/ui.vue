@@ -8,6 +8,7 @@
     <li class="btn"><router-link to="/componentslists/noticeBar">noticeBar</router-link></li>
     <li class="text-center">-----------------------------------------------</li>
     <li class="btn"><router-link to="/transition/switchBtn">switch开关效果</router-link></li>
+    <li class="btn"><router-link to="/transition/virtualScrollList">list多屏优化</router-link></li>
   </ul>
 </template>
 

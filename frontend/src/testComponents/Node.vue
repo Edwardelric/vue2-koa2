@@ -1,5 +1,5 @@
 <template>
-    <ul>
+    <ul class="node">
         <li>
             <span>{{data.title}}</span>
             <Node v-for="(item, index) in data.children" :key="index" :data="item"></Node>
@@ -15,11 +15,12 @@ export default {
 </script>
 
 <style>
-    ul {
+
+    .node ul {
         padding-left: 10px;
         list-style-type: disc;
     }
-    li {
+    .node li {
         list-style-type: circle;
     }
 </style>

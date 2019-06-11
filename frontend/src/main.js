@@ -24,7 +24,6 @@ Vue.use(ajax);
 //     }
 // })
 
-
 Vue.prototype.$Notice = Notice;
 Vue.prototype.$dispatch = function(eventName, data) {
     let parent = this.$parent;
